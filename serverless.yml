@@ -5,7 +5,7 @@ provider:
   name: aws
   runtime: go1.x
   region: us-east-1
-  stage: ${opt:stage}
+  # stage: ${opt:stage}
 
 functions:
   api:
@@ -19,4 +19,11 @@ package:
   patterns:
   - '!*/**'
   - bin/main
+
+plugins:
+  - serverless-offline
+ 
+custom:
+  serverless-offline:
+    noPrependStageInUrl: true
 
