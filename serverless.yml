@@ -9,10 +9,10 @@ provider:
 
 functions:
   api:
-    handler: bin/main
+    handler: bin/fileUploadService/main
     events:
       - http:
-          path: /ping
+          path: /file_upload/ping
           method: GET
           
 package:
