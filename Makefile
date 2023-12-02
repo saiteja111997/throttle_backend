@@ -10,3 +10,6 @@ deploy_prod: clean build fileUploadService
 
 start: build
 	sls offline --useDocker start --host 0.0.0.0 --stage local
+
+start_local: build
+	go run fileUploadService/main.go
