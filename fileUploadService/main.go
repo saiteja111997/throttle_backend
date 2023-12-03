@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
@@ -27,6 +28,8 @@ func main() {
 	app.Get("/file_upload/ping", server.HealthCheck)
 	app.Post("/file_upload/upload_error", server.UploadError)
 
+	fmt.Println("Routing established!!")
+
 	if helpers.IsLambda() {
 		fiberLambda = fiberadapter.New(app)
 		lambda.Start(Handler)
@@ -37,5 +40,16 @@ func main() {
 }
 
 func Handler(ctx context.Context, request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
-	return fiberLambda.ProxyWithContext(ctx, request)
+	// Proxy the request to the Fiber app and get the response
+	response, err := fiberLambda.ProxyWithContext(ctx, request)
+
+	response.Headers = make(map[string]string)
+
+	// Add CORS headers to the response
+	response.Headers["Access-Control-Allow-Origin"] = "*"
+	response.Headers["Access-Control-Allow-Methods"] = "GET,POST,PUT,DELETE"
+	response.Headers["Access-Control-Allow-Headers"] = "Origin, Content-Type, Accept"
+	response.Headers["Access-Control-Allow-Credentials"] = "true"
+
+	return response, err
 }

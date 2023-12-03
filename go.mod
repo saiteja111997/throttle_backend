@@ -5,6 +5,11 @@ go 1.19
 require github.com/aws/aws-sdk-go v1.48.10
 
 require (
+	github.com/gofiber/utils v0.0.10 // indirect
+	github.com/gorilla/schema v1.1.0 // indirect
+)
+
+require (
 	github.com/andybalholm/brotli v1.0.6 // indirect
 	github.com/aws/aws-lambda-go v1.41.0 // indirect
 	github.com/awslabs/aws-lambda-go-api-proxy v0.16.0 // indirect
@@ -18,6 +23,8 @@ require (
 	github.com/go-playground/universal-translator v0.18.1 // indirect
 	github.com/go-playground/validator/v10 v10.14.0 // indirect
 	github.com/goccy/go-json v0.10.2 // indirect
+	github.com/gofiber/cors v0.2.2
+	github.com/gofiber/fiber v1.14.6
 	github.com/gofiber/fiber/v2 v2.51.0 // indirect
 	github.com/google/uuid v1.4.0 // indirect
 	github.com/jmespath/go-jmespath v0.4.0 // indirect

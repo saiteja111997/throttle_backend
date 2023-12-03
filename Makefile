@@ -5,7 +5,7 @@ clean:
 build fileUploadService: clean
 	env GOARCH=amd64 GOOS=linux go build -ldflags="-s -w" -o bin/fileUploadService/main fileUploadService/main.go
 
-deploy_prod: clean build fileUploadService
+deploy_prod: build fileUploadService
 	serverless deploy --stage prod --aws-profile saiteja
 
 start: build

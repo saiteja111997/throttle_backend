@@ -8,7 +8,7 @@
       "name": "aws",
       "runtime": "go1.x",
       "region": "us-east-1",
-      "stage": "dev",
+      "stage": "prod",
       "versionFunctions": true,
       "compiledCloudFormationTemplate": {
         "AWSTemplateFormatVersion": "2010-09-09",
@@ -174,9 +174,9 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/throttle-backend-apis/prod/1701429826423-2023-12-01T11:23:46.423Z/throttle-backend-apis.zip"
+                "S3Key": "serverless/throttle-backend-apis/prod/1701590319599-2023-12-03T07:58:39.599Z/throttle-backend-apis.zip"
               },
-              "Handler": "bin/main",
+              "Handler": "bin/fileUploadService/main",
               "Runtime": "go1.x",
               "FunctionName": "throttle-backend-apis-prod-api",
               "MemorySize": 1024,
@@ -192,14 +192,14 @@
               "ApiLogGroup"
             ]
           },
-          "ApiLambdaVersiono2BxwUXjYio8c8XKvbFqAjtC6YZeV5nFY7OiWUuE": {
+          "ApiLambdaVersion9Uw0EMKmi18XviD39gE276f5mpPxPJpLQhVpaV4DQQ": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "ApiLambdaFunction"
               },
-              "CodeSha256": "564rnnSWiE5yF4iIX38YfBMJCNNY2O2twTXYXWz3Wdc="
+              "CodeSha256": "fK7V1CxfFt3190R155tivxtS4u5KuORtDtkKDrn4CN8="
             }
           },
           "ApiGatewayRestApi": {
@@ -214,7 +214,7 @@
               "Policy": ""
             }
           },
-          "ApiGatewayResourcePing": {
+          "ApiGatewayResourceFileupload": {
             "Type": "AWS::ApiGateway::Resource",
             "Properties": {
               "ParentId": {
@@ -223,19 +223,31 @@
                   "RootResourceId"
                 ]
               },
-              "PathPart": "ping",
+              "PathPart": "file_upload",
               "RestApiId": {
                 "Ref": "ApiGatewayRestApi"
               }
             }
           },
-          "ApiGatewayMethodPingGet": {
+          "ApiGatewayResourceFileuploadUploaderror": {
+            "Type": "AWS::ApiGateway::Resource",
+            "Properties": {
+              "ParentId": {
+                "Ref": "ApiGatewayResourceFileupload"
+              },
+              "PathPart": "upload_error",
+              "RestApiId": {
+                "Ref": "ApiGatewayRestApi"
+              }
+            }
+          },
+          "ApiGatewayMethodFileuploadUploaderrorPost": {
             "Type": "AWS::ApiGateway::Method",
             "Properties": {
-              "HttpMethod": "GET",
+              "HttpMethod": "POST",
               "RequestParameters": {},
               "ResourceId": {
-                "Ref": "ApiGatewayResourcePing"
+                "Ref": "ApiGatewayResourceFileuploadUploaderror"
               },
               "RestApiId": {
                 "Ref": "ApiGatewayRestApi"
@@ -275,7 +287,7 @@
               "ApiLambdaPermissionApiGateway"
             ]
           },
-          "ApiGatewayDeployment1701429825189": {
+          "ApiGatewayDeployment1701590318112": {
             "Type": "AWS::ApiGateway::Deployment",
             "Properties": {
               "RestApiId": {
@@ -284,7 +296,7 @@
               "StageName": "prod"
             },
             "DependsOn": [
-              "ApiGatewayMethodPingGet"
+              "ApiGatewayMethodFileuploadUploaderrorPost"
             ]
           },
           "ApiLambdaPermissionApiGateway": {
@@ -337,7 +349,7 @@
           "ApiLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "ApiLambdaVersiono2BxwUXjYio8c8XKvbFqAjtC6YZeV5nFY7OiWUuE"
+              "Ref": "ApiLambdaVersion9Uw0EMKmi18XviD39gE276f5mpPxPJpLQhVpaV4DQQ"
             },
             "Export": {
               "Name": "sls-throttle-backend-apis-prod-ApiLambdaFunctionQualifiedArn"
@@ -466,12 +478,12 @@
     "pluginsData": {},
     "functions": {
       "api": {
-        "handler": "bin/main",
+        "handler": "bin/fileUploadService/main",
         "events": [
           {
             "http": {
-              "path": "ping",
-              "method": "get",
+              "path": "file_upload/upload_error",
+              "method": "post",
               "integration": "AWS_PROXY"
             }
           }
@@ -482,7 +494,7 @@
         "timeout": 6,
         "runtime": "go1.x",
         "vpc": {},
-        "versionLogicalId": "ApiLambdaVersiono2BxwUXjYio8c8XKvbFqAjtC6YZeV5nFY7OiWUuE"
+        "versionLogicalId": "ApiLambdaVersion9Uw0EMKmi18XviD39gE276f5mpPxPJpLQhVpaV4DQQ"
       }
     },
     "configValidationMode": "warn",
@@ -499,11 +511,11 @@
       "package": {
         "patterns": [
           "!*/**",
-          "bin/main"
+          "bin/**"
         ],
         "artifactsS3KeyDirname": "serverless/throttle-backend-apis/prod/code-artifacts",
         "artifact": "/Users/saiteja-ch/Desktop/side_hustle_repos/throttle_backend/.serverless/throttle-backend-apis.zip",
-        "artifactDirectoryName": "serverless/throttle-backend-apis/prod/1701429826423-2023-12-01T11:23:46.423Z"
+        "artifactDirectoryName": "serverless/throttle-backend-apis/prod/1701590319599-2023-12-03T07:58:39.599Z"
       },
       "plugins": {
         "$ref": "$[\"service\"][\"plugins\"]"
@@ -517,7 +529,7 @@
     "artifact": "/Users/saiteja-ch/Desktop/side_hustle_repos/throttle_backend/.serverless/throttle-backend-apis.zip"
   },
   "package": {
-    "artifactDirectoryName": "serverless/throttle-backend-apis/prod/1701429826423-2023-12-01T11:23:46.423Z",
+    "artifactDirectoryName": "serverless/throttle-backend-apis/prod/1701590319599-2023-12-03T07:58:39.599Z",
     "artifact": "throttle-backend-apis.zip"
   }
 }

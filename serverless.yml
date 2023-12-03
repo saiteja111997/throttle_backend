@@ -5,20 +5,20 @@ provider:
   name: aws
   runtime: go1.x
   region: us-east-1
-  # stage: ${opt:stage}
+  stage: ${opt:stage}
 
 functions:
   api:
     handler: bin/fileUploadService/main
     events:
       - http:
-          path: /file_upload/ping
-          method: GET
+          path: /file_upload/upload_error
+          method: POST
           
 package:
   patterns:
   - '!*/**'
-  - bin/main
+  - bin/**
 
 plugins:
   - serverless-offline
