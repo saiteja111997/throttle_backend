@@ -162,7 +162,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/throttle-backend-apis/prod/1701590319599-2023-12-03T07:58:39.599Z/throttle-backend-apis.zip"
+          "S3Key": "serverless/throttle-backend-apis/prod/1702491867700-2023-12-13T18:24:27.700Z/throttle-backend-apis.zip"
         },
         "Handler": "bin/fileUploadService/main",
         "Runtime": "go1.x",
@@ -180,14 +180,14 @@
         "ApiLogGroup"
       ]
     },
-    "ApiLambdaVersion9Uw0EMKmi18XviD39gE276f5mpPxPJpLQhVpaV4DQQ": {
+    "ApiLambdaVersionjO0OrDtl5tUGeQmtan2dg4cGaCwJhMIKO2nefCN0": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "ApiLambdaFunction"
         },
-        "CodeSha256": "fK7V1CxfFt3190R155tivxtS4u5KuORtDtkKDrn4CN8="
+        "CodeSha256": "2f/55qQBYHw3s5jenh7oGmZ5nxtY64d4eELho0LiUVw="
       }
     },
     "ApiGatewayRestApi": {
@@ -275,7 +275,7 @@
         "ApiLambdaPermissionApiGateway"
       ]
     },
-    "ApiGatewayDeployment1701590318112": {
+    "ApiGatewayDeployment1702491866198": {
       "Type": "AWS::ApiGateway::Deployment",
       "Properties": {
         "RestApiId": {
@@ -337,7 +337,7 @@
     "ApiLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "ApiLambdaVersion9Uw0EMKmi18XviD39gE276f5mpPxPJpLQhVpaV4DQQ"
+        "Ref": "ApiLambdaVersionjO0OrDtl5tUGeQmtan2dg4cGaCwJhMIKO2nefCN0"
       },
       "Export": {
         "Name": "sls-throttle-backend-apis-prod-ApiLambdaFunctionQualifiedArn"
