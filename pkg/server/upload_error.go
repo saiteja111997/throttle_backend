@@ -20,11 +20,6 @@ type Server struct {
 
 var wg sync.WaitGroup
 
-const (
-	awsRegion = "us-east-1"
-	s3Bucket  = "myerrorbucket"
-)
-
 func (s *Server) UploadError(c *fiber.Ctx) error {
 
 	uniqueID := uuid.New().String()
@@ -65,13 +60,39 @@ func (s *Server) UploadError(c *fiber.Ctx) error {
 
 	wg.Add(2)
 
-	errorInput := structures.Error{
-		UserID: userId,
-		ID:     uniqueID,
-		Title:  title,
+	errorInput := structures.Errors{
+		UserID:   userId,
+		ID:       uniqueID,
+		Title:    title,
+		FilePath: uploadFolderPath,
 	}
 
-	go func(e structures.Error, errDbUpload error, database *gorm.DB) {
+	count := 1
+
+	for _, file := range files {
+		// Get the name of the file
+		filename := file.Filename
+		fmt.Println("Uploaded filename:", filename)
+		// Print any additional file information you need
+		fmt.Println("File size:", file.Size)
+		fmt.Println("MIME type:", file.Header.Get("Content-Type"))
+
+		switch count {
+		case 1:
+			errorInput.Image1 = uploadFolderPath + "/" + filename
+		case 2:
+			errorInput.Image2 = uploadFolderPath + "/" + filename
+		case 3:
+			errorInput.Image3 = uploadFolderPath + "/" + filename
+		case 4:
+			errorInput.Image4 = uploadFolderPath + "/" + filename
+		case 5:
+			break
+		}
+		count++
+	}
+
+	go func(e structures.Errors, errDbUpload error, database *gorm.DB) {
 		defer wg.Done()
 		response := database.Create(&e)
 		errDbUpload = response.Error
@@ -105,6 +126,39 @@ func (s *Server) UploadError(c *fiber.Ctx) error {
 	}
 
 	return c.Status(http.StatusOK).JSON(fiber.Map{
-		"message": "Text and files uploaded successfully",
+		"message":    "Text and files uploaded successfully",
+		"session_id": uniqueID,
+	})
+}
+func (s *Server) InsertUserActions(c *fiber.Ctx) error {
+	text := c.FormValue("text")
+	error_id := c.FormValue("error_id")
+	user_id := c.FormValue("user_id")
+	user_id_int, err := strconv.Atoi(user_id)
+
+	if err != nil {
+		return c.Status(http.StatusInternalServerError).JSON(fiber.Map{
+			"error": fmt.Sprintf("Failed to convert user id to integer, %v", err),
+		})
+	}
+
+	e := structures.UserActions{
+		TextContent: text,
+		UserID:      user_id_int,
+		ErrorID:     error_id,
+	}
+
+	errDbUpload := s.Db.Create(&e).Error
+
+	fmt.Println("Error : ", errDbUpload)
+
+	if errDbUpload != nil {
+		return c.Status(http.StatusInternalServerError).JSON(fiber.Map{
+			"error": fmt.Sprintf("Failed to insert into the db, %v", err),
+		})
+	}
+
+	return c.Status(http.StatusOK).JSON(fiber.Map{
+		"message": "Highlighted text uploaded successfully",
 	})
 }

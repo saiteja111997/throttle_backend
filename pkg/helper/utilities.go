@@ -2,6 +2,7 @@ package helpers
 
 import (
 	"fmt"
+	"io/ioutil"
 	"mime/multipart"
 	"os"
 
@@ -53,4 +54,42 @@ func UploadToS3(file *multipart.FileHeader, filePath, awsRegion, s3Bucket string
 	}
 
 	return nil
+}
+
+func DownloadFromS3(filePath, awsRegion, s3Bucket string) ([]byte, error) {
+	// Create an AWS session
+	sess, err := session.NewSession(&aws.Config{
+		Region: aws.String(awsRegion),
+	})
+	if err != nil {
+		fmt.Printf("Unable to download due to error: %v", err)
+		return nil, err
+	}
+
+	// Create an S3 service client
+	s3Client := s3.New(sess)
+
+	// Prepare the S3 input parameters
+	params := &s3.GetObjectInput{
+		Bucket: aws.String(s3Bucket),
+		Key:    aws.String(filePath),
+	}
+
+	// Download the file from S3
+	resp, err := s3Client.GetObject(params)
+	if err != nil {
+		fmt.Printf("Unable to download due to error: %v", err)
+		return nil, err
+	}
+	defer resp.Body.Close()
+
+	// Read the S3 object content into a byte slice
+	imageBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		fmt.Printf("Unable to read content due to error: %v", err)
+		return nil, err
+	}
+
+	fmt.Println("Download successful!")
+	return imageBytes, nil
 }

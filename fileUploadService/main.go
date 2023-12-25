@@ -50,7 +50,7 @@ func main() {
 		return
 	}
 
-	db.AutoMigrate(&structures.Error{}, &structures.User{})
+	db.AutoMigrate(&structures.Errors{}, &structures.User{}, structures.UserActions{})
 
 	defer db.Close()
 
@@ -58,10 +58,12 @@ func main() {
 		Db: db,
 	}
 
-	app.Get("/file_upload/ping", svr.HealthCheck)
+	app.Get("/ping", svr.HealthCheck)
 	app.Post("/file_upload/upload_error", svr.UploadError)
-	app.Get("/get_db_data", svr.GetDbData)
-	app.Post("upload_db_data", svr.UploadDbData)
+	app.Post("/generate_document", svr.GenerateDocument)
+	app.Post("/file_upload/user_action", svr.InsertUserActions)
+	app.Post("/editing/error", svr.GetRawErrorDocs)
+	app.Post("/editing/images", svr.GetImagesFromS3)
 
 	fmt.Println("Routing established!!")
 
