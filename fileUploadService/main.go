@@ -60,7 +60,7 @@ func main() {
 
 	app.Get("/ping", svr.HealthCheck)
 	app.Post("/file_upload/upload_error", svr.UploadError)
-	app.Post("/generate_document", svr.GenerateDocument)
+	app.Post("/generateDocument", svr.GenerateDocument)
 	app.Post("/file_upload/user_action", svr.InsertUserActions)
 	app.Post("/editing/error", svr.GetRawErrorDocs)
 	app.Post("/editing/images", svr.GetImagesFromS3)

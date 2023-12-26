@@ -32,6 +32,12 @@ functions:
       - http:
           path: /editing/images
           method: POST
+  GenerateDocument:
+    handler: bin/fileUploadService/main
+    events:
+      - http:
+          path: /generateDocument
+          method: POST
 
 package:
   patterns:

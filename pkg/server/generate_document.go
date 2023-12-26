@@ -5,13 +5,16 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"log"
 	"net/http"
+	"os"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/joho/godotenv"
 	"github.com/saiteja111997/throttle_backend/pkg/structures"
 )
 
-const geminiApiEndPoint = "https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=AIzaSyALm_rgqVG1DTx2ChONsxf_I5OpNc2cbQs"
+var geminiApiEndPoint = "https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key="
 
 func (s *Server) GenerateDocument(c *fiber.Ctx) error {
 
@@ -46,7 +49,7 @@ func (s *Server) GenerateDocument(c *fiber.Ctx) error {
 	previous_string := requestData.Contents[0].Parts[0].Text
 
 	for _, val := range userActions {
-		previous_string += val.TextContent
+		previous_string += " " + val.TextContent
 	}
 
 	previous_string += "]"
@@ -59,6 +62,15 @@ func (s *Server) GenerateDocument(c *fiber.Ctx) error {
 	if err != nil {
 		return err
 	}
+
+	err = godotenv.Load(".env")
+	if err != nil {
+		log.Fatalf("Error loading environment variables file")
+	}
+
+	apiKey := os.Getenv("APIKEY")
+
+	geminiApiEndPoint += apiKey
 
 	resp, err := http.Post(geminiApiEndPoint, "application/json", bytes.NewBuffer(requestBody))
 	if err != nil {
