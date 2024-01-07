@@ -130,6 +130,7 @@ func (s *Server) UploadError(c *fiber.Ctx) error {
 		"session_id": uniqueID,
 	})
 }
+
 func (s *Server) InsertUserActions(c *fiber.Ctx) error {
 	text := c.FormValue("text")
 	error_id := c.FormValue("error_id")

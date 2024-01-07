@@ -11,6 +11,7 @@ import (
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/joho/godotenv"
+	helpers "github.com/saiteja111997/throttle_backend/pkg/helper"
 	"github.com/saiteja111997/throttle_backend/pkg/structures"
 )
 
@@ -22,6 +23,8 @@ func (s *Server) GenerateDocument(c *fiber.Ctx) error {
 
 	errorID := c.FormValue("error_id")
 	title := c.FormValue("title")
+
+	filepath := "/errorDocs/" + errorID
 
 	var userActions []structures.UserAction
 
@@ -95,6 +98,16 @@ func (s *Server) GenerateDocument(c *fiber.Ctx) error {
 
 	// Extracting text from the response
 	if len(geminiResponse.Candidates) > 0 && len(geminiResponse.Candidates[0].Content.Parts) > 0 {
+
+		text := geminiResponse.Candidates[0].Content.Parts[0].Text
+
+		// upload the error documentation to s3
+		err := helpers.UploadTextToS3(text, filepath, awsRegion, s3Bucket)
+
+		if err != nil {
+			log.Fatal("Unable to upload the error to S3 bucket")
+		}
+
 		return c.Status(http.StatusOK).JSON(fiber.Map{
 			"status":   "success",
 			"response": geminiResponse.Candidates[0].Content.Parts[0].Text,
