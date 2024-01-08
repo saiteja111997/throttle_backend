@@ -10,7 +10,7 @@ import (
 	"os"
 
 	"github.com/gofiber/fiber/v2"
-	"github.com/joho/godotenv"
+
 	helpers "github.com/saiteja111997/throttle_backend/pkg/helper"
 	"github.com/saiteja111997/throttle_backend/pkg/structures"
 )
@@ -64,11 +64,6 @@ func (s *Server) GenerateDocument(c *fiber.Ctx) error {
 	requestBody, err := json.Marshal(requestData)
 	if err != nil {
 		return err
-	}
-
-	err = godotenv.Load(".env")
-	if err != nil {
-		log.Fatalf("Error loading environment variables file")
 	}
 
 	apiKey := os.Getenv("APIKEY")

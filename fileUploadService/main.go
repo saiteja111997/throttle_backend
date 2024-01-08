@@ -13,6 +13,7 @@ import (
 	fiberadapter "github.com/awslabs/aws-lambda-go-api-proxy/fiber"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
+	"github.com/joho/godotenv"
 	"github.com/pkg/errors"
 	helpers "github.com/saiteja111997/throttle_backend/pkg/helper"
 	"github.com/saiteja111997/throttle_backend/pkg/server"
@@ -20,6 +21,13 @@ import (
 )
 
 var fiberLambda *fiberadapter.FiberLambda
+
+func init() {
+	err := godotenv.Load(".env")
+	if err != nil {
+		log.Fatalf("Error loading environment variables file")
+	}
+}
 
 var (
 	DB_USERNAME = os.Getenv("DB_USERNAME")
@@ -76,6 +84,8 @@ func main() {
 	app.Post("/editing/images", svr.GetImagesFromS3)
 	app.Post("/auth/login", svr.Login)
 	app.Post("/auth/register", svr.Register)
+	app.Get("/oauth2/login", svr.HandleLogin)
+	app.Get("/oauth2/callback", svr.HandleCallback)
 
 	fmt.Println("Routing established!!")
 
