@@ -12,10 +12,12 @@ type Database struct {
 }
 
 // User model
-type User struct {
+type Users struct {
 	ID        int       `gorm:"primaryKey" json:"id"`
 	Username  string    `gorm:"not null" json:"username"`
 	Password  string    `gorm:"not null" json:"password"`
+	Email     string    `gorm:"not null" json:"email"`
+	FullName  string    `gorm:"not null" json:"full_name"`
 	CreatedAt time.Time `gorm:"default:CURRENT_TIMESTAMP" json:"created_at"`
 	UpdatedAt time.Time `gorm:"default:CURRENT_TIMESTAMP" json:"updated_at"`
 }

@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"net"
+	"os"
 	"time"
 
 	"github.com/aws/aws-lambda-go/events"
@@ -19,6 +20,14 @@ import (
 )
 
 var fiberLambda *fiberadapter.FiberLambda
+
+var (
+	DB_USERNAME = os.Getenv("DB_USERNAME")
+	DB_PASSWORD = os.Getenv("DB_PASSWORD")
+	DB_HOSTNAME = os.Getenv("DB_HOSTNAME")
+	DB_PORT     = os.Getenv("DB_PORT")
+	DATABASE    = os.Getenv("DATABASE")
+)
 
 func main() {
 	app := fiber.New()
@@ -38,11 +47,11 @@ func main() {
 	fmt.Println("Connection established")
 
 	db, err := helpers.Open(helpers.Config{
-		Username: "postgres",
-		Password: "Saiteja11",
-		Hostname: "mydbinstance.c1cnaivzlk0f.us-east-1.rds.amazonaws.com",
-		Port:     "5432",
-		Database: "postgres",
+		Username: DB_USERNAME,
+		Password: DB_PASSWORD,
+		Hostname: DB_HOSTNAME,
+		Port:     DB_PORT,
+		Database: DATABASE,
 	})
 
 	if err != nil {
@@ -50,7 +59,7 @@ func main() {
 		return
 	}
 
-	db.AutoMigrate(&structures.Errors{}, &structures.User{}, structures.UserActions{})
+	db.AutoMigrate(&structures.Errors{}, &structures.Users{}, structures.UserActions{})
 
 	defer db.Close()
 
@@ -62,8 +71,11 @@ func main() {
 	app.Post("/file_upload/upload_error", svr.UploadError)
 	app.Post("/generateDocument", svr.GenerateDocument)
 	app.Post("/file_upload/user_action", svr.InsertUserActions)
+	app.Post("/file_upload/delete_user_action", svr.DeleteUserAction)
 	app.Post("/editing/error", svr.GetRawErrorDocs)
 	app.Post("/editing/images", svr.GetImagesFromS3)
+	app.Post("/auth/login", svr.Login)
+	app.Post("/auth/register", svr.Register)
 
 	fmt.Println("Routing established!!")
 

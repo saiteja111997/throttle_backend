@@ -10,6 +10,7 @@ import (
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/s3"
+	"golang.org/x/crypto/bcrypt"
 )
 
 func IsLambda() bool {
@@ -166,4 +167,12 @@ func DownloadTextFromS3(objectKey, awsRegion, s3Bucket string) (string, error) {
 	}
 
 	return string(textContent), nil
+}
+
+func HashPassword(password string) (string, error) {
+	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
+	if err != nil {
+		return "", err
+	}
+	return string(hashedPassword), nil
 }

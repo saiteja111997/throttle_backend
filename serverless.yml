@@ -20,6 +20,12 @@ functions:
       - http:
           path: /file_upload/user_action
           method: POST
+  DeleteUserAction:
+    handler: bin/fileUploadService/main
+    events:
+      - http:
+          path: /file_upload/delete_user_action
+          method: POST
   GetRawErrorData:
     handler: bin/fileUploadService/main
     events:
@@ -37,6 +43,18 @@ functions:
     events:
       - http:
           path: /generateDocument
+          method: POST
+  Login:
+    handler: bin/fileUploadService/main
+    events:
+      - http:
+          path: /auth/login
+          method: POST
+  Register:
+    handler: bin/fileUploadService/main
+    events:
+      - http:
+          path: /auth/register
           method: POST
 
 package:

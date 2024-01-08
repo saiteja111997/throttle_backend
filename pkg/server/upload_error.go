@@ -163,3 +163,30 @@ func (s *Server) InsertUserActions(c *fiber.Ctx) error {
 		"message": "Highlighted text uploaded successfully",
 	})
 }
+
+func (s *Server) DeleteUserAction(c *fiber.Ctx) error {
+	// user_id := c.FormValue("user_id")
+	user_action_id := c.FormValue("user_action_id")
+
+	integer_id, err := strconv.Atoi(user_action_id)
+
+	if err != nil {
+		c.Status(http.StatusInternalServerError).JSON(fiber.Map{
+			"status": "failure",
+			"error":  err,
+		})
+	}
+
+	// Delete the record from the UserActions table based on ID
+	result := s.Db.Where("id = ?", integer_id).Delete(&structures.UserActions{})
+
+	if result.Error != nil {
+		fmt.Println("Error deleting record:", result.Error)
+		return result.Error
+	}
+
+	return c.Status(http.StatusOK).JSON(fiber.Map{
+		"message": "Successfully deleted the user action!!",
+	})
+
+}
