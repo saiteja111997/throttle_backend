@@ -119,6 +119,18 @@
         "LogGroupName": "/aws/lambda/throttle-backend-apis-prod-Register"
       }
     },
+    "Oauth2LoginLogGroup": {
+      "Type": "AWS::Logs::LogGroup",
+      "Properties": {
+        "LogGroupName": "/aws/lambda/throttle-backend-apis-prod-Oauth2Login"
+      }
+    },
+    "Oauth2CallBackLogGroup": {
+      "Type": "AWS::Logs::LogGroup",
+      "Properties": {
+        "LogGroupName": "/aws/lambda/throttle-backend-apis-prod-Oauth2CallBack"
+      }
+    },
     "IamRoleLambdaExecution": {
       "Type": "AWS::IAM::Role",
       "Properties": {
@@ -204,7 +216,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/throttle-backend-apis/prod/1704644948291-2024-01-07T16:29:08.291Z/throttle-backend-apis.zip"
+          "S3Key": "serverless/throttle-backend-apis/prod/1704734925748-2024-01-08T17:28:45.748Z/throttle-backend-apis.zip"
         },
         "Handler": "bin/fileUploadService/main",
         "Runtime": "go1.x",
@@ -229,7 +241,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/throttle-backend-apis/prod/1704644948291-2024-01-07T16:29:08.291Z/throttle-backend-apis.zip"
+          "S3Key": "serverless/throttle-backend-apis/prod/1704734925748-2024-01-08T17:28:45.748Z/throttle-backend-apis.zip"
         },
         "Handler": "bin/fileUploadService/main",
         "Runtime": "go1.x",
@@ -254,7 +266,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/throttle-backend-apis/prod/1704644948291-2024-01-07T16:29:08.291Z/throttle-backend-apis.zip"
+          "S3Key": "serverless/throttle-backend-apis/prod/1704734925748-2024-01-08T17:28:45.748Z/throttle-backend-apis.zip"
         },
         "Handler": "bin/fileUploadService/main",
         "Runtime": "go1.x",
@@ -279,7 +291,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/throttle-backend-apis/prod/1704644948291-2024-01-07T16:29:08.291Z/throttle-backend-apis.zip"
+          "S3Key": "serverless/throttle-backend-apis/prod/1704734925748-2024-01-08T17:28:45.748Z/throttle-backend-apis.zip"
         },
         "Handler": "bin/fileUploadService/main",
         "Runtime": "go1.x",
@@ -304,7 +316,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/throttle-backend-apis/prod/1704644948291-2024-01-07T16:29:08.291Z/throttle-backend-apis.zip"
+          "S3Key": "serverless/throttle-backend-apis/prod/1704734925748-2024-01-08T17:28:45.748Z/throttle-backend-apis.zip"
         },
         "Handler": "bin/fileUploadService/main",
         "Runtime": "go1.x",
@@ -329,7 +341,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/throttle-backend-apis/prod/1704644948291-2024-01-07T16:29:08.291Z/throttle-backend-apis.zip"
+          "S3Key": "serverless/throttle-backend-apis/prod/1704734925748-2024-01-08T17:28:45.748Z/throttle-backend-apis.zip"
         },
         "Handler": "bin/fileUploadService/main",
         "Runtime": "go1.x",
@@ -354,7 +366,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/throttle-backend-apis/prod/1704644948291-2024-01-07T16:29:08.291Z/throttle-backend-apis.zip"
+          "S3Key": "serverless/throttle-backend-apis/prod/1704734925748-2024-01-08T17:28:45.748Z/throttle-backend-apis.zip"
         },
         "Handler": "bin/fileUploadService/main",
         "Runtime": "go1.x",
@@ -379,7 +391,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/throttle-backend-apis/prod/1704644948291-2024-01-07T16:29:08.291Z/throttle-backend-apis.zip"
+          "S3Key": "serverless/throttle-backend-apis/prod/1704734925748-2024-01-08T17:28:45.748Z/throttle-backend-apis.zip"
         },
         "Handler": "bin/fileUploadService/main",
         "Runtime": "go1.x",
@@ -397,84 +409,154 @@
         "RegisterLogGroup"
       ]
     },
-    "FileUploadLambdaVersionuuHq0Ep8E8Tawjw4Yt3Q8ydIFI7AVO8jMX66l35lo": {
+    "Oauth2LoginLambdaFunction": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Code": {
+          "S3Bucket": {
+            "Ref": "ServerlessDeploymentBucket"
+          },
+          "S3Key": "serverless/throttle-backend-apis/prod/1704734925748-2024-01-08T17:28:45.748Z/throttle-backend-apis.zip"
+        },
+        "Handler": "bin/fileUploadService/main",
+        "Runtime": "go1.x",
+        "FunctionName": "throttle-backend-apis-prod-Oauth2Login",
+        "MemorySize": 1024,
+        "Timeout": 6,
+        "Role": {
+          "Fn::GetAtt": [
+            "IamRoleLambdaExecution",
+            "Arn"
+          ]
+        }
+      },
+      "DependsOn": [
+        "Oauth2LoginLogGroup"
+      ]
+    },
+    "Oauth2CallBackLambdaFunction": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Code": {
+          "S3Bucket": {
+            "Ref": "ServerlessDeploymentBucket"
+          },
+          "S3Key": "serverless/throttle-backend-apis/prod/1704734925748-2024-01-08T17:28:45.748Z/throttle-backend-apis.zip"
+        },
+        "Handler": "bin/fileUploadService/main",
+        "Runtime": "go1.x",
+        "FunctionName": "throttle-backend-apis-prod-Oauth2CallBack",
+        "MemorySize": 1024,
+        "Timeout": 6,
+        "Role": {
+          "Fn::GetAtt": [
+            "IamRoleLambdaExecution",
+            "Arn"
+          ]
+        }
+      },
+      "DependsOn": [
+        "Oauth2CallBackLogGroup"
+      ]
+    },
+    "FileUploadLambdaVersionfUw1iL9Z0VqvJM3q1HHN3fFPi3JVXaOzfvKO6aY": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "FileUploadLambdaFunction"
         },
-        "CodeSha256": "tqVZM5v9Jw6XkqsOnDsGPUN9DawqS7cEpIZVAI/8uRw="
+        "CodeSha256": "996IFmkmiNvKqbU9HCIuUg7e1L+/AzcPYWF0jsWOX9k="
       }
     },
-    "UserActionLambdaVersion2JEuACxxSRgO1SjwMnjIdQxrcHIyd7x1p1T4HA83JvY": {
+    "UserActionLambdaVersioniVNiNCDKuI0Cqkdrq320xpeaiJfZfyebsBELztZPjYc": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "UserActionLambdaFunction"
         },
-        "CodeSha256": "tqVZM5v9Jw6XkqsOnDsGPUN9DawqS7cEpIZVAI/8uRw="
+        "CodeSha256": "996IFmkmiNvKqbU9HCIuUg7e1L+/AzcPYWF0jsWOX9k="
       }
     },
-    "DeleteUserActionLambdaVersionHIEEh6Y6a6ZCU9fnMu0H6R7feWBwP1mmjqER7uO3Uj8": {
+    "DeleteUserActionLambdaVersionEZprIuGBDMh2v5pxLsdBckQqjEtlO1tF07d6catM6g": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "DeleteUserActionLambdaFunction"
         },
-        "CodeSha256": "tqVZM5v9Jw6XkqsOnDsGPUN9DawqS7cEpIZVAI/8uRw="
+        "CodeSha256": "996IFmkmiNvKqbU9HCIuUg7e1L+/AzcPYWF0jsWOX9k="
       }
     },
-    "GetRawErrorDataLambdaVersion0lbKMd2PGlEYYSmH6hF55QadWSrIKxHYvQWjpjuWhyk": {
+    "GetRawErrorDataLambdaVersionBKQ7sVJJ6zLPVHAf6Uj56d6uo0ggAFLm1OUTv9KZ0": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "GetRawErrorDataLambdaFunction"
         },
-        "CodeSha256": "tqVZM5v9Jw6XkqsOnDsGPUN9DawqS7cEpIZVAI/8uRw="
+        "CodeSha256": "996IFmkmiNvKqbU9HCIuUg7e1L+/AzcPYWF0jsWOX9k="
       }
     },
-    "GetRawImageDataLambdaVersionn50VXDJbRvLdSRTTAiMoVfen1c85OdifnqMLIak0yw": {
+    "GetRawImageDataLambdaVersionJRdqn9MtaeBNEICbRFSUsU7Q7hYIkfwXLIXUIS8v0k": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "GetRawImageDataLambdaFunction"
         },
-        "CodeSha256": "tqVZM5v9Jw6XkqsOnDsGPUN9DawqS7cEpIZVAI/8uRw="
+        "CodeSha256": "996IFmkmiNvKqbU9HCIuUg7e1L+/AzcPYWF0jsWOX9k="
       }
     },
-    "GenerateDocumentLambdaVersionWtb0Q3jXh7Nu5KfDSOCFViVw5nmvM6Xq3pXgyudSRwo": {
+    "GenerateDocumentLambdaVersion1OaFGkekmW6fLSNLBU7BsP06DNpUeHXJx3Cnjt3f6g": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "GenerateDocumentLambdaFunction"
         },
-        "CodeSha256": "tqVZM5v9Jw6XkqsOnDsGPUN9DawqS7cEpIZVAI/8uRw="
+        "CodeSha256": "996IFmkmiNvKqbU9HCIuUg7e1L+/AzcPYWF0jsWOX9k="
       }
     },
-    "LoginLambdaVersion2xZPDTI27QmfiQR6wJ3js4voVMn2bIo8pbeCs3gNHGo": {
+    "LoginLambdaVersionDrwBiQ0rQw9uYhzfQPwzLXRGFnO8zTNpwhDDogMTMc": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "LoginLambdaFunction"
         },
-        "CodeSha256": "tqVZM5v9Jw6XkqsOnDsGPUN9DawqS7cEpIZVAI/8uRw="
+        "CodeSha256": "996IFmkmiNvKqbU9HCIuUg7e1L+/AzcPYWF0jsWOX9k="
       }
     },
-    "RegisterLambdaVersionzrGVUtjgKjNKsASdDBB9t0apWg035FTMfVxll9cUSQ": {
+    "RegisterLambdaVersionL99r06Pg5UKdDgf1KOBOIw3JrMfseTNVKL39c4YB94A": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "RegisterLambdaFunction"
         },
-        "CodeSha256": "tqVZM5v9Jw6XkqsOnDsGPUN9DawqS7cEpIZVAI/8uRw="
+        "CodeSha256": "996IFmkmiNvKqbU9HCIuUg7e1L+/AzcPYWF0jsWOX9k="
+      }
+    },
+    "Oauth2LoginLambdaVersion9sArrIfGc4wn4RFGD2PUuKd43PaYIIniJGNmXG9g4": {
+      "Type": "AWS::Lambda::Version",
+      "DeletionPolicy": "Retain",
+      "Properties": {
+        "FunctionName": {
+          "Ref": "Oauth2LoginLambdaFunction"
+        },
+        "CodeSha256": "996IFmkmiNvKqbU9HCIuUg7e1L+/AzcPYWF0jsWOX9k="
+      }
+    },
+    "Oauth2CallBackLambdaVersionNUdupVOeh8BLYfvjvDfg5vlqByxdmNE8C6eoyYtk": {
+      "Type": "AWS::Lambda::Version",
+      "DeletionPolicy": "Retain",
+      "Properties": {
+        "FunctionName": {
+          "Ref": "Oauth2CallBackLambdaFunction"
+        },
+        "CodeSha256": "996IFmkmiNvKqbU9HCIuUg7e1L+/AzcPYWF0jsWOX9k="
       }
     },
     "ApiGatewayRestApi": {
@@ -628,6 +710,45 @@
           "Ref": "ApiGatewayResourceAuth"
         },
         "PathPart": "register",
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        }
+      }
+    },
+    "ApiGatewayResourceOauth2": {
+      "Type": "AWS::ApiGateway::Resource",
+      "Properties": {
+        "ParentId": {
+          "Fn::GetAtt": [
+            "ApiGatewayRestApi",
+            "RootResourceId"
+          ]
+        },
+        "PathPart": "oauth2",
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        }
+      }
+    },
+    "ApiGatewayResourceOauth2Login": {
+      "Type": "AWS::ApiGateway::Resource",
+      "Properties": {
+        "ParentId": {
+          "Ref": "ApiGatewayResourceOauth2"
+        },
+        "PathPart": "login",
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        }
+      }
+    },
+    "ApiGatewayResourceOauth2Callback": {
+      "Type": "AWS::ApiGateway::Resource",
+      "Properties": {
+        "ParentId": {
+          "Ref": "ApiGatewayResourceOauth2"
+        },
+        "PathPart": "callback",
         "RestApiId": {
           "Ref": "ApiGatewayRestApi"
         }
@@ -1001,7 +1122,99 @@
         "RegisterLambdaPermissionApiGateway"
       ]
     },
-    "ApiGatewayDeployment1704644946770": {
+    "ApiGatewayMethodOauth2LoginGet": {
+      "Type": "AWS::ApiGateway::Method",
+      "Properties": {
+        "HttpMethod": "GET",
+        "RequestParameters": {},
+        "ResourceId": {
+          "Ref": "ApiGatewayResourceOauth2Login"
+        },
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        },
+        "ApiKeyRequired": false,
+        "AuthorizationType": "NONE",
+        "Integration": {
+          "IntegrationHttpMethod": "POST",
+          "Type": "AWS_PROXY",
+          "Uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition"
+                },
+                ":apigateway:",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ":lambda:path/2015-03-31/functions/",
+                {
+                  "Fn::GetAtt": [
+                    "Oauth2LoginLambdaFunction",
+                    "Arn"
+                  ]
+                },
+                "/invocations"
+              ]
+            ]
+          }
+        },
+        "MethodResponses": []
+      },
+      "DependsOn": [
+        "Oauth2LoginLambdaPermissionApiGateway"
+      ]
+    },
+    "ApiGatewayMethodOauth2CallbackGet": {
+      "Type": "AWS::ApiGateway::Method",
+      "Properties": {
+        "HttpMethod": "GET",
+        "RequestParameters": {},
+        "ResourceId": {
+          "Ref": "ApiGatewayResourceOauth2Callback"
+        },
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        },
+        "ApiKeyRequired": false,
+        "AuthorizationType": "NONE",
+        "Integration": {
+          "IntegrationHttpMethod": "POST",
+          "Type": "AWS_PROXY",
+          "Uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition"
+                },
+                ":apigateway:",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ":lambda:path/2015-03-31/functions/",
+                {
+                  "Fn::GetAtt": [
+                    "Oauth2CallBackLambdaFunction",
+                    "Arn"
+                  ]
+                },
+                "/invocations"
+              ]
+            ]
+          }
+        },
+        "MethodResponses": []
+      },
+      "DependsOn": [
+        "Oauth2CallBackLambdaPermissionApiGateway"
+      ]
+    },
+    "ApiGatewayDeployment1704734924135": {
       "Type": "AWS::ApiGateway::Deployment",
       "Properties": {
         "RestApiId": {
@@ -1017,7 +1230,9 @@
         "ApiGatewayMethodEditingImagesPost",
         "ApiGatewayMethodGeneratedocumentPost",
         "ApiGatewayMethodAuthLoginPost",
-        "ApiGatewayMethodAuthRegisterPost"
+        "ApiGatewayMethodAuthRegisterPost",
+        "ApiGatewayMethodOauth2LoginGet",
+        "ApiGatewayMethodOauth2CallbackGet"
       ]
     },
     "FileUploadLambdaPermissionApiGateway": {
@@ -1315,6 +1530,80 @@
           ]
         }
       }
+    },
+    "Oauth2LoginLambdaPermissionApiGateway": {
+      "Type": "AWS::Lambda::Permission",
+      "Properties": {
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "Oauth2LoginLambdaFunction",
+            "Arn"
+          ]
+        },
+        "Action": "lambda:InvokeFunction",
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:",
+              {
+                "Ref": "AWS::Partition"
+              },
+              ":execute-api:",
+              {
+                "Ref": "AWS::Region"
+              },
+              ":",
+              {
+                "Ref": "AWS::AccountId"
+              },
+              ":",
+              {
+                "Ref": "ApiGatewayRestApi"
+              },
+              "/*/*"
+            ]
+          ]
+        }
+      }
+    },
+    "Oauth2CallBackLambdaPermissionApiGateway": {
+      "Type": "AWS::Lambda::Permission",
+      "Properties": {
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "Oauth2CallBackLambdaFunction",
+            "Arn"
+          ]
+        },
+        "Action": "lambda:InvokeFunction",
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:",
+              {
+                "Ref": "AWS::Partition"
+              },
+              ":execute-api:",
+              {
+                "Ref": "AWS::Region"
+              },
+              ":",
+              {
+                "Ref": "AWS::AccountId"
+              },
+              ":",
+              {
+                "Ref": "ApiGatewayRestApi"
+              },
+              "/*/*"
+            ]
+          ]
+        }
+      }
     }
   },
   "Outputs": {
@@ -1329,7 +1618,7 @@
     "FileUploadLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "FileUploadLambdaVersionuuHq0Ep8E8Tawjw4Yt3Q8ydIFI7AVO8jMX66l35lo"
+        "Ref": "FileUploadLambdaVersionfUw1iL9Z0VqvJM3q1HHN3fFPi3JVXaOzfvKO6aY"
       },
       "Export": {
         "Name": "sls-throttle-backend-apis-prod-FileUploadLambdaFunctionQualifiedArn"
@@ -1338,7 +1627,7 @@
     "UserActionLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "UserActionLambdaVersion2JEuACxxSRgO1SjwMnjIdQxrcHIyd7x1p1T4HA83JvY"
+        "Ref": "UserActionLambdaVersioniVNiNCDKuI0Cqkdrq320xpeaiJfZfyebsBELztZPjYc"
       },
       "Export": {
         "Name": "sls-throttle-backend-apis-prod-UserActionLambdaFunctionQualifiedArn"
@@ -1347,7 +1636,7 @@
     "DeleteUserActionLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "DeleteUserActionLambdaVersionHIEEh6Y6a6ZCU9fnMu0H6R7feWBwP1mmjqER7uO3Uj8"
+        "Ref": "DeleteUserActionLambdaVersionEZprIuGBDMh2v5pxLsdBckQqjEtlO1tF07d6catM6g"
       },
       "Export": {
         "Name": "sls-throttle-backend-apis-prod-DeleteUserActionLambdaFunctionQualifiedArn"
@@ -1356,7 +1645,7 @@
     "GetRawErrorDataLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "GetRawErrorDataLambdaVersion0lbKMd2PGlEYYSmH6hF55QadWSrIKxHYvQWjpjuWhyk"
+        "Ref": "GetRawErrorDataLambdaVersionBKQ7sVJJ6zLPVHAf6Uj56d6uo0ggAFLm1OUTv9KZ0"
       },
       "Export": {
         "Name": "sls-throttle-backend-apis-prod-GetRawErrorDataLambdaFunctionQualifiedArn"
@@ -1365,7 +1654,7 @@
     "GetRawImageDataLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "GetRawImageDataLambdaVersionn50VXDJbRvLdSRTTAiMoVfen1c85OdifnqMLIak0yw"
+        "Ref": "GetRawImageDataLambdaVersionJRdqn9MtaeBNEICbRFSUsU7Q7hYIkfwXLIXUIS8v0k"
       },
       "Export": {
         "Name": "sls-throttle-backend-apis-prod-GetRawImageDataLambdaFunctionQualifiedArn"
@@ -1374,7 +1663,7 @@
     "GenerateDocumentLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "GenerateDocumentLambdaVersionWtb0Q3jXh7Nu5KfDSOCFViVw5nmvM6Xq3pXgyudSRwo"
+        "Ref": "GenerateDocumentLambdaVersion1OaFGkekmW6fLSNLBU7BsP06DNpUeHXJx3Cnjt3f6g"
       },
       "Export": {
         "Name": "sls-throttle-backend-apis-prod-GenerateDocumentLambdaFunctionQualifiedArn"
@@ -1383,7 +1672,7 @@
     "LoginLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "LoginLambdaVersion2xZPDTI27QmfiQR6wJ3js4voVMn2bIo8pbeCs3gNHGo"
+        "Ref": "LoginLambdaVersionDrwBiQ0rQw9uYhzfQPwzLXRGFnO8zTNpwhDDogMTMc"
       },
       "Export": {
         "Name": "sls-throttle-backend-apis-prod-LoginLambdaFunctionQualifiedArn"
@@ -1392,10 +1681,28 @@
     "RegisterLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "RegisterLambdaVersionzrGVUtjgKjNKsASdDBB9t0apWg035FTMfVxll9cUSQ"
+        "Ref": "RegisterLambdaVersionL99r06Pg5UKdDgf1KOBOIw3JrMfseTNVKL39c4YB94A"
       },
       "Export": {
         "Name": "sls-throttle-backend-apis-prod-RegisterLambdaFunctionQualifiedArn"
+      }
+    },
+    "Oauth2LoginLambdaFunctionQualifiedArn": {
+      "Description": "Current Lambda function version",
+      "Value": {
+        "Ref": "Oauth2LoginLambdaVersion9sArrIfGc4wn4RFGD2PUuKd43PaYIIniJGNmXG9g4"
+      },
+      "Export": {
+        "Name": "sls-throttle-backend-apis-prod-Oauth2LoginLambdaFunctionQualifiedArn"
+      }
+    },
+    "Oauth2CallBackLambdaFunctionQualifiedArn": {
+      "Description": "Current Lambda function version",
+      "Value": {
+        "Ref": "Oauth2CallBackLambdaVersionNUdupVOeh8BLYfvjvDfg5vlqByxdmNE8C6eoyYtk"
+      },
+      "Export": {
+        "Name": "sls-throttle-backend-apis-prod-Oauth2CallBackLambdaFunctionQualifiedArn"
       }
     },
     "ServiceEndpoint": {

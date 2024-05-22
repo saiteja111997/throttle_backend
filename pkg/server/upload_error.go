@@ -137,6 +137,15 @@ func (s *Server) InsertUserActions(c *fiber.Ctx) error {
 	user_id := c.FormValue("user_id")
 	user_id_int, err := strconv.Atoi(user_id)
 
+	startContainer := c.FormValue("startContainer")
+	endContainer := c.FormValue("endContainer")
+	startOffset := c.FormValue("startOffset")
+	endOffset := c.FormValue("endOffset")
+	currentURL := c.FormValue("currentURL")
+
+	fmt.Println("startContainer, endContainer, startOffset, endOffset : ", startContainer, endContainer, startOffset, endOffset)
+	fmt.Println("currentURL : ", currentURL)
+
 	if err != nil {
 		return c.Status(http.StatusInternalServerError).JSON(fiber.Map{
 			"error": fmt.Sprintf("Failed to convert user id to integer, %v", err),
@@ -189,4 +198,38 @@ func (s *Server) DeleteUserAction(c *fiber.Ctx) error {
 		"message": "Successfully deleted the user action!!",
 	})
 
+}
+
+func (s *Server) ValidateUserAction(c *fiber.Ctx) error {
+	user_action_id := c.FormValue("user_action_id")
+	isUseful := c.FormValue("useful")
+
+	fmt.Println("Printing useful : ", isUseful)
+	fmt.Println("Printing user_action_id : ", user_action_id)
+
+	if isUseful != "0" && isUseful != "1" {
+		return c.Status(http.StatusInternalServerError).JSON(fiber.Map{
+			"message": "Invalid useful field.",
+		})
+	}
+
+	integer_id, err := strconv.Atoi(user_action_id)
+
+	if err != nil {
+		c.Status(http.StatusInternalServerError).JSON(fiber.Map{
+			"status": "failure",
+			"error":  err,
+		})
+	}
+
+	result := s.Db.Exec("UPDATE user_actions SET useful = ? WHERE id = ?", isUseful, integer_id)
+
+	if result.Error != nil {
+		fmt.Println("Error deleting record:", result.Error)
+		return result.Error
+	}
+
+	return c.Status(http.StatusOK).JSON(fiber.Map{
+		"message": "Successfully validated the user action!!",
+	})
 }

@@ -4,7 +4,6 @@ import (
 	"encoding/base64"
 	"fmt"
 	"net/http"
-	"strconv"
 	"sync"
 
 	"github.com/gofiber/fiber/v2"
@@ -119,19 +118,38 @@ func (s *Server) GetImagesFromS3(c *fiber.Ctx) error {
 		close(imageCh)
 	}()
 
-	result := map[string]interface{}{}
+	result := []map[string]string{}
 	for i := 0; i < len(imageArr); i++ {
-		key := "Image" + strconv.Itoa(i+1)
+		// key := "Image" + strconv.Itoa(i+1)
 
 		// Encode []byte to base64 string
 		base64String := base64.StdEncoding.EncodeToString(<-imageCh)
-		fmt.Println("Base64 string:", base64String)
+		// fmt.Println("Base64 string:", base64String)
 
-		result[key] = base64String
+		result = append(result, map[string]string{
+			"image": base64String,
+		})
 	}
 
 	return c.Status(http.StatusOK).JSON(fiber.Map{
 		"status": "success",
 		"result": result,
 	})
+}
+
+func (s *Server) GetLatestRawError(c *fiber.Ctx) error {
+
+	errorID := c.FormValue("error_id")
+
+	var result []structures.UserAction
+	err := s.Db.Where("error_id = ?", errorID).Order("created_at asc").Find(&result).Error
+	if err != nil {
+		fmt.Println("Error fetching user action data:", err)
+	}
+
+	return c.Status(http.StatusOK).JSON(fiber.Map{
+		"status": "success",
+		"result": result,
+	})
+
 }

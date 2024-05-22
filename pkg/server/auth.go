@@ -1,6 +1,7 @@
 package server
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 
@@ -15,6 +16,8 @@ func (s *Server) Register(c *fiber.Ctx) error {
 	fullName := c.FormValue("full_name")
 	password := c.FormValue("password")
 	email := c.FormValue("email")
+
+	fmt.Println("Printing input values : ", fullName, password, email)
 
 	hashedPassword, err := helpers.HashPassword(password)
 	if err != nil {

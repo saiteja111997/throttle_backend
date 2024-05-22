@@ -22,7 +22,7 @@ func init() {
 	googleOauthConfig = &oauth2.Config{
 		ClientID:     clientId,
 		ClientSecret: clientSecret,
-		RedirectURL:  "http://localhost:3000/auth/callback",
+		RedirectURL:  "https://jm4e775kx3.execute-api.us-east-1.amazonaws.com/prod/auth/callback",
 		Scopes:       []string{"https://www.googleapis.com/auth/userinfo.email"},
 		Endpoint:     google.Endpoint,
 	}

@@ -10,3 +10,6 @@ type RawErrorResponse struct {
 	ErrorInfo   Errors       `json:"error_info"`
 	UserActions []UserAction `json:"user_actions"`
 }
+type Title struct {
+	Title string `json:"title"`
+}
