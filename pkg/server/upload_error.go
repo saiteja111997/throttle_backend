@@ -2,10 +2,8 @@ package server
 
 import (
 	"fmt"
-	"mime/multipart"
 	"net/http"
 	"strconv"
-	"sync"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/google/uuid"
@@ -18,16 +16,16 @@ type Server struct {
 	Db *gorm.DB
 }
 
-var wg sync.WaitGroup
-
 func (s *Server) UploadError(c *fiber.Ctx) error {
 
 	uniqueID := uuid.New().String()
 	fmt.Println("Error id is : ", uniqueID)
 
 	userIdString := c.FormValue("userId")
+
+	fmt.Println("Printing userID : ", userIdString)
+
 	userId, err := strconv.Atoi(userIdString)
-	title := c.FormValue("text")
 
 	if err != nil {
 		return c.Status(http.StatusBadRequest).JSON(fiber.Map{
@@ -35,9 +33,11 @@ func (s *Server) UploadError(c *fiber.Ctx) error {
 		})
 	}
 
+	fmt.Println("Printing userID : ", userId)
+
 	// Retrieve text input from the form data
-	text := c.FormValue("text")
-	fmt.Println("text : ", text)
+	title := c.FormValue("text")
+	fmt.Println("title : ", title)
 
 	// Handle image files
 	form, err := c.MultipartForm()
@@ -56,15 +56,11 @@ func (s *Server) UploadError(c *fiber.Ctx) error {
 
 	uploadFolderPath += "/" + lastThreeLetters + "/" + uniqueID
 
-	var errFileUpload, errDbUpload error
-
-	wg.Add(2)
-
 	errorInput := structures.Errors{
-		UserID:   userId,
-		ID:       uniqueID,
-		Title:    title,
-		FilePath: uploadFolderPath,
+		UserID: userId,
+		ID:     uniqueID,
+		Title:  title,
+		Status: 0,
 	}
 
 	count := 1
@@ -86,28 +82,13 @@ func (s *Server) UploadError(c *fiber.Ctx) error {
 			errorInput.Image3 = uploadFolderPath + "/" + filename
 		case 4:
 			errorInput.Image4 = uploadFolderPath + "/" + filename
-		case 5:
-			break
 		}
 		count++
 	}
 
-	go func(e structures.Errors, errDbUpload error, database *gorm.DB) {
-		defer wg.Done()
-		response := database.Create(&e)
-		errDbUpload = response.Error
-	}(errorInput, errDbUpload, s.Db)
+	errDbUpload := s.Db.Create(&errorInput).Error
 
-	go func(files []*multipart.FileHeader, errFileUpload error) {
-		defer wg.Done()
-		for _, file := range files {
-			fileName := file.Filename
-			filePath := fmt.Sprintf("%s/%s", uploadFolderPath, fileName)
-			errFileUpload = helpers.UploadToS3(file, filePath, awsRegion, s3Bucket)
-		}
-	}(files, errFileUpload)
-
-	wg.Wait()
+	fmt.Println("Print error : ", errDbUpload)
 
 	if errDbUpload != nil {
 		return c.Status(http.StatusInternalServerError).JSON(fiber.Map{
@@ -117,12 +98,19 @@ func (s *Server) UploadError(c *fiber.Ctx) error {
 		fmt.Println("Data successfully uploaded to Db!!")
 	}
 
-	if errFileUpload != nil {
-		return c.Status(http.StatusInternalServerError).JSON(fiber.Map{
-			"error": fmt.Sprintf("Failed to upload files to S3 : %v", errFileUpload),
-		})
-	} else {
-		fmt.Println("Files successfully added to s3 bucket")
+	for _, file := range files {
+		fileName := file.Filename
+		filePath := fmt.Sprintf("%s/%s", uploadFolderPath, fileName)
+		errFileUpload := helpers.UploadToS3(file, filePath, awsRegion, s3Bucket)
+
+		if errFileUpload != nil {
+			return c.Status(http.StatusInternalServerError).JSON(fiber.Map{
+				"error": fmt.Sprintf("Failed to upload files to S3 : %v", errFileUpload),
+			})
+		} else {
+			fmt.Println("Files successfully added to s3 bucket")
+		}
+
 	}
 
 	return c.Status(http.StatusOK).JSON(fiber.Map{

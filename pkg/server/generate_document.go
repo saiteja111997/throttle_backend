@@ -8,8 +8,10 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"strings"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/jinzhu/gorm"
 	"github.com/joho/godotenv"
 
 	helpers "github.com/saiteja111997/throttle_backend/pkg/helper"
@@ -17,11 +19,9 @@ import (
 )
 
 func (s *Server) GenerateDocument(c *fiber.Ctx) error {
-
 	fmt.Println("Start request!!")
 
 	errorID := c.FormValue("error_id")
-
 	fmt.Println("Printing error_id : ", errorID)
 
 	filepath := "/errorDocs/" + errorID
@@ -32,7 +32,6 @@ func (s *Server) GenerateDocument(c *fiber.Ctx) error {
 	var errorData structures.Errors
 
 	err := s.Db.Where("error_id = ?", errorID).Find(&userActions).Error
-
 	if err != nil {
 		fmt.Println("Error fetching user action data from db : ", err.Error())
 		return c.Status(http.StatusInternalServerError).JSON(fiber.Map{
@@ -42,9 +41,7 @@ func (s *Server) GenerateDocument(c *fiber.Ctx) error {
 	}
 
 	err = s.Db.Where("id = ?", errorID).Find(&errorData).Error
-
 	fmt.Println("Printing Title : ", errorData.Title)
-
 	if err != nil {
 		fmt.Println("Error fetching error data from db : ", err.Error())
 		return c.Status(http.StatusInternalServerError).JSON(fiber.Map{
@@ -53,23 +50,35 @@ func (s *Server) GenerateDocument(c *fiber.Ctx) error {
 		})
 	}
 
+	requestText := fmt.Sprintf("Assume a user has just solved an error. Here are the details we have: 1. **Title:** %s 2. **Commands/Texts/Code Snippets:** [", errorData.Title)
+	for _, val := range userActions {
+		requestText += " " + val.TextContent
+	}
+	requestText += "] Please generate a blog post styled documentation in the manner of a Medium article. The documentation should include the following sections: "
+	requestText += "**[Insert Title Here]**:  **Introduction** Start with an engaging introduction that provides context about the error and its impact. This should be a paragraph. "
+	requestText += "*Understanding the Error* Provide a detailed explanation of the error, including possible causes and symptoms. This should be a paragraph. "
+	requestText += "*Troubleshooting Steps* Outline a series of troubleshooting steps that were taken to resolve the error. Each step should be detailed and include any relevant commands or code snippets. "
+	requestText += "Commands and code snippets should be wrapped between triple backticks (```). Bullet points should start with *. Subheadings should be marked with a single asterisk (*). "
+	requestText += "Ensure a high amount of emphasis on user-generated inputs (user actions) while making the documentation very elaborate. "
+	requestText += "The documentation should be written strictly in the first person perspective to make it evident that the person personally solved this error. "
+	requestText += "**Conclusion** Summarize the resolution process and offer any additional tips or best practices to avoid similar errors in the future. This should be a paragraph. "
+	requestText += "Formatting guidelines: 1. **Title**: Place between double asterisks and on a new line with no leading spaces (e.g., **Title**). 2. *Subheading*: Place between single asterisks on a new line with no leading spaces (e.g., *Subheading*). "
+	requestText += "3. Paragraph: Regular text. 4. Code/Command: Wrap with triple backticks (```). 5. Bullet Point: Start with an asterisk (*) followed by a space. Example structure: **Title**: -bash: aws: command not found --- "
+	requestText += "**Introduction** This section provides an engaging introduction to the error and its impact. *Understanding the Error* This section details the error, its possible causes, and symptoms. "
+	requestText += "*Troubleshooting Steps* * Step 1: Identify the Issue ``` aws --version ``` * Step 2: Reinstall AWS CLI ``` sudo pip install awscli --force-reinstall --upgrade ``` "
+	requestText += "**Conclusion** This section summarizes the resolution process and offers additional tips or best practices. Ensure the response follows these guidelines strictly with no extra symbols or empty lines."
+
 	requestData := structures.GeminiAIRequest{
 		Contents: []structures.Content{
 			{
 				Parts: []structures.Part{
 					{
-						Text: "Assume user has just solved an error. Here are details we have, error description, list of commands, texts and code snippets. You have to generate error documentation based on this information and make sure the documentation should sound as if the user has created the documentation. Here is what an example request looks like title: aws cli version 2 install -'command not found', code/texts/command:[Don't know why AWS bundler could not do it., sudo chmod -R 755 /usr/local/aws-cli].All the sub headings in response should be wrapped between **sub heading**. Please maintain this precise response structure, No Extra # or *. Keep in mind to put a lot of emphasis on user provided code/texts/commands, and provide an elaborate documentation which also covers the concepts related to the error. Now generate the response for this, title: " + errorData.Title + ", code/texts/command:[",
+						Text: requestText,
 					},
 				},
 			},
 		},
 	}
-
-	for _, val := range userActions {
-		requestData.Contents[0].Parts[0].Text += " " + val.TextContent
-	}
-
-	requestData.Contents[0].Parts[0].Text += "], Please maintain the structure of the document exactly like this one meaning subheadings between **, code between ```, And bullet points starts with * => **Title: -bash: aws: command not found** **Sub Heading: Possible Causes** * AWS CLI is not installed or not in the PATH environment variable. **Sub Heading: Troubleshooting** **1. Install AWS CLI** ```sudo pip install awscli --force-reinstall --upgrade ``` **2. Update PATH Environment Variable** * Open `.bashrc` or `.zshrc` file. * Add the following line: ```export PATH=/usr/local/bin:$PATH ``` * Save and close the file. * Source the file: ```source ~/.bashrc ``` **Sub Heading: Additional Tips** If you encounter issues during installation, try the following: * Uninstall any existing AWS CLI installation: ``` sudo pip uninstall awscli ``` * Ensure you have Python 3.6 or later installed. * Check the installation directory: ```aws --version ``` * If the command still not found, try: ```sudo chmod -R 755 /usr/local/aws-cli ```"
 
 	fmt.Println("Printing the whole string : ", requestData.Contents[0].Parts[0].Text)
 
@@ -86,7 +95,6 @@ func (s *Server) GenerateDocument(c *fiber.Ctx) error {
 	}
 
 	apiKey := os.Getenv("APIKEY")
-
 	geminiApiEndPoint += apiKey
 
 	fmt.Println("Printing endpoint : ", geminiApiEndPoint)
@@ -117,28 +125,36 @@ func (s *Server) GenerateDocument(c *fiber.Ctx) error {
 
 	fmt.Println("Printing the response before extracting the text : ", geminiResponse)
 
-	// Extracting text from the response
 	if len(geminiResponse.Candidates) > 0 && len(geminiResponse.Candidates[0].Content.Parts) > 0 {
-
 		text := geminiResponse.Candidates[0].Content.Parts[0].Text
 
-		// upload the error documentation to s3
-		err := helpers.UploadTextToS3(text, filepath, awsRegion, s3Bucket)
+		// Remove "---" from the text
+		text = strings.ReplaceAll(text, "---", "")
 
+		err := helpers.UploadTextToS3(text, filepath, awsRegion, s3Bucket)
 		if err != nil {
 			log.Fatal("Unable to upload the error to S3 bucket")
 		}
 
-		fmt.Println("Here is the response from Gemini Ai : ", geminiResponse.Candidates[0].Content.Parts[0].Text)
+		if err := updateDocFilePath(s.Db, errorID, filepath); err != nil {
+			log.Fatalf("failed to update doc file path: %v", err)
+		}
 
-		// Now, set the Content-Type header to JSON
+		log.Println("DocFilePath updated successfully")
+
+		fmt.Println("Here is the response from Gemini Ai : ", text)
+
 		c.Set("Content-Type", "application/json")
-
 		return c.Status(http.StatusOK).JSON(fiber.Map{
 			"status":   "success",
-			"response": geminiResponse.Candidates[0].Content.Parts[0].Text,
+			"response": text,
 		})
 	}
 
 	return err
+}
+
+func updateDocFilePath(db *gorm.DB, errorID string, newDocFilePath string) error {
+	result := db.Model(&structures.Errors{}).Where("id = ?", errorID).Update("doc_file_path", newDocFilePath)
+	return result.Error
 }

@@ -2,6 +2,15 @@ package structures
 
 import "time"
 
+// Status is an enumeration type for the status column
+type Status int
+
+const (
+	StatusOpen       Status = iota // 0
+	StatusInProgress               // 1
+	StatusClosed                   // 2
+)
+
 type Database struct {
 	host     string
 	database string
@@ -22,29 +31,40 @@ type Users struct {
 	UpdatedAt time.Time `gorm:"default:CURRENT_TIMESTAMP" json:"updated_at"`
 }
 
-// Error model
+// Errors model with added Status and TimeTaken columns
 type Errors struct {
-	ID        string    `gorm:"primaryKey" json:"id"`
-	UserID    int       `gorm:"not null" json:"user_id"`
-	Title     string    `gorm:"not null" json:"title"`
-	FilePath  string    `gorm:"not null default:''" json:"file_path"`
-	Image1    string    `gorm:"not null default:''" json:"image_1"`
-	Image2    string    `gorm:"not null default:''" json:"image_2"`
-	Image3    string    `gorm:"not null default:''" json:"image_3"`
-	Image4    string    `gorm:"not null default:''" json:"image_4"`
-	CreatedAt time.Time `gorm:"default:CURRENT_TIMESTAMP" json:"created_at"`
-	UpdatedAt time.Time `gorm:"default:CURRENT_TIMESTAMP" json:"updated_at"`
-}
-
-// UserActions model
-type UserActions struct {
-	ID          int       `gorm:"primaryKey" json:"id"`
+	ID          string    `gorm:"primaryKey" json:"id"`
 	UserID      int       `gorm:"not null" json:"user_id"`
-	ErrorID     string    `gorm:"not null" json:"error_id"`
-	TextContent string    `gorm:"not null" json:"text_content"`
-	Type        string    `gorm:"not null" json:"type"`
+	Title       string    `gorm:"not null" json:"title"`
+	DocFilePath string    `gorm:"not null;default:''" json:"doc_file_path"`
+	Image1      string    `gorm:"not null;default:''" json:"image_1"`
+	Image2      string    `gorm:"not null;default:''" json:"image_2"`
+	Image3      string    `gorm:"not null;default:''" json:"image_3"`
+	Image4      string    `gorm:"not null;default:''" json:"image_4"`
+	Status      Status    `gorm:"not null;default:0" json:"status"`
+	TimeTaken   string    `gorm:"not null" json:"time_taken"`
 	CreatedAt   time.Time `gorm:"default:CURRENT_TIMESTAMP" json:"created_at"`
 	UpdatedAt   time.Time `gorm:"default:CURRENT_TIMESTAMP" json:"updated_at"`
+}
+
+// UsefulType is an enumeration type for the Useful column
+type UsefulType int
+
+const (
+	NotUseful UsefulType = iota // 0
+	Useful                      // 1
+)
+
+// UserActions model with updated Useful column as an enum
+type UserActions struct {
+	ID          int        `gorm:"primaryKey" json:"id"`
+	UserID      int        `gorm:"not null" json:"user_id"`
+	ErrorID     string     `gorm:"not null" json:"error_id"`
+	TextContent string     `gorm:"not null" json:"text_content"`
+	Type        string     `gorm:"not null" json:"type"`
+	Useful      UsefulType `gorm:"not null" json:"useful"`
+	CreatedAt   time.Time  `gorm:"default:CURRENT_TIMESTAMP" json:"created_at"`
+	UpdatedAt   time.Time  `gorm:"default:CURRENT_TIMESTAMP" json:"updated_at"`
 }
 
 // CREATE TABLE users (
