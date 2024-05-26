@@ -228,7 +228,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/throttle-backend-apis/prod/1704734925748-2024-01-08T17:28:45.748Z/throttle-backend-apis.zip"
+                "S3Key": "serverless/throttle-backend-apis/prod/1716633100859-2024-05-25T10:31:40.859Z/throttle-backend-apis.zip"
               },
               "Handler": "bin/fileUploadService/main",
               "Runtime": "go1.x",
@@ -253,7 +253,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/throttle-backend-apis/prod/1704734925748-2024-01-08T17:28:45.748Z/throttle-backend-apis.zip"
+                "S3Key": "serverless/throttle-backend-apis/prod/1716633100859-2024-05-25T10:31:40.859Z/throttle-backend-apis.zip"
               },
               "Handler": "bin/fileUploadService/main",
               "Runtime": "go1.x",
@@ -278,7 +278,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/throttle-backend-apis/prod/1704734925748-2024-01-08T17:28:45.748Z/throttle-backend-apis.zip"
+                "S3Key": "serverless/throttle-backend-apis/prod/1716633100859-2024-05-25T10:31:40.859Z/throttle-backend-apis.zip"
               },
               "Handler": "bin/fileUploadService/main",
               "Runtime": "go1.x",
@@ -303,7 +303,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/throttle-backend-apis/prod/1704734925748-2024-01-08T17:28:45.748Z/throttle-backend-apis.zip"
+                "S3Key": "serverless/throttle-backend-apis/prod/1716633100859-2024-05-25T10:31:40.859Z/throttle-backend-apis.zip"
               },
               "Handler": "bin/fileUploadService/main",
               "Runtime": "go1.x",
@@ -328,7 +328,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/throttle-backend-apis/prod/1704734925748-2024-01-08T17:28:45.748Z/throttle-backend-apis.zip"
+                "S3Key": "serverless/throttle-backend-apis/prod/1716633100859-2024-05-25T10:31:40.859Z/throttle-backend-apis.zip"
               },
               "Handler": "bin/fileUploadService/main",
               "Runtime": "go1.x",
@@ -353,7 +353,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/throttle-backend-apis/prod/1704734925748-2024-01-08T17:28:45.748Z/throttle-backend-apis.zip"
+                "S3Key": "serverless/throttle-backend-apis/prod/1716633100859-2024-05-25T10:31:40.859Z/throttle-backend-apis.zip"
               },
               "Handler": "bin/fileUploadService/main",
               "Runtime": "go1.x",
@@ -378,7 +378,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/throttle-backend-apis/prod/1704734925748-2024-01-08T17:28:45.748Z/throttle-backend-apis.zip"
+                "S3Key": "serverless/throttle-backend-apis/prod/1716633100859-2024-05-25T10:31:40.859Z/throttle-backend-apis.zip"
               },
               "Handler": "bin/fileUploadService/main",
               "Runtime": "go1.x",
@@ -403,7 +403,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/throttle-backend-apis/prod/1704734925748-2024-01-08T17:28:45.748Z/throttle-backend-apis.zip"
+                "S3Key": "serverless/throttle-backend-apis/prod/1716633100859-2024-05-25T10:31:40.859Z/throttle-backend-apis.zip"
               },
               "Handler": "bin/fileUploadService/main",
               "Runtime": "go1.x",
@@ -428,7 +428,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/throttle-backend-apis/prod/1704734925748-2024-01-08T17:28:45.748Z/throttle-backend-apis.zip"
+                "S3Key": "serverless/throttle-backend-apis/prod/1716633100859-2024-05-25T10:31:40.859Z/throttle-backend-apis.zip"
               },
               "Handler": "bin/fileUploadService/main",
               "Runtime": "go1.x",
@@ -453,7 +453,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/throttle-backend-apis/prod/1704734925748-2024-01-08T17:28:45.748Z/throttle-backend-apis.zip"
+                "S3Key": "serverless/throttle-backend-apis/prod/1716633100859-2024-05-25T10:31:40.859Z/throttle-backend-apis.zip"
               },
               "Handler": "bin/fileUploadService/main",
               "Runtime": "go1.x",
@@ -471,104 +471,104 @@
               "Oauth2CallBackLogGroup"
             ]
           },
-          "FileUploadLambdaVersionfUw1iL9Z0VqvJM3q1HHN3fFPi3JVXaOzfvKO6aY": {
+          "FileUploadLambdaVersion0uWBUSYVZJxIDmCLxOcPWEw2xK7fPiyNVI3N0gAlg8": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "FileUploadLambdaFunction"
               },
-              "CodeSha256": "996IFmkmiNvKqbU9HCIuUg7e1L+/AzcPYWF0jsWOX9k="
+              "CodeSha256": "jAKyg2YCy+VkN7gQLf4ancvdp7s4ib/dhzXKPl1cIBo="
             }
           },
-          "UserActionLambdaVersioniVNiNCDKuI0Cqkdrq320xpeaiJfZfyebsBELztZPjYc": {
+          "UserActionLambdaVersionaNmEsLthzcCnYvtp2zzJdoaoZ6lZJvbUVy8kON4Ek": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "UserActionLambdaFunction"
               },
-              "CodeSha256": "996IFmkmiNvKqbU9HCIuUg7e1L+/AzcPYWF0jsWOX9k="
+              "CodeSha256": "jAKyg2YCy+VkN7gQLf4ancvdp7s4ib/dhzXKPl1cIBo="
             }
           },
-          "DeleteUserActionLambdaVersionEZprIuGBDMh2v5pxLsdBckQqjEtlO1tF07d6catM6g": {
+          "DeleteUserActionLambdaVersionpE0b3uFbjAPJoGHNAdeeg2UIjkrHPXR3YITwuqCNIY": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "DeleteUserActionLambdaFunction"
               },
-              "CodeSha256": "996IFmkmiNvKqbU9HCIuUg7e1L+/AzcPYWF0jsWOX9k="
+              "CodeSha256": "jAKyg2YCy+VkN7gQLf4ancvdp7s4ib/dhzXKPl1cIBo="
             }
           },
-          "GetRawErrorDataLambdaVersionBKQ7sVJJ6zLPVHAf6Uj56d6uo0ggAFLm1OUTv9KZ0": {
+          "GetRawErrorDataLambdaVersionFBiDr0JRc7OUmxqscHdtIS4iyyMM1YjNIuGWNIOG4": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "GetRawErrorDataLambdaFunction"
               },
-              "CodeSha256": "996IFmkmiNvKqbU9HCIuUg7e1L+/AzcPYWF0jsWOX9k="
+              "CodeSha256": "jAKyg2YCy+VkN7gQLf4ancvdp7s4ib/dhzXKPl1cIBo="
             }
           },
-          "GetRawImageDataLambdaVersionJRdqn9MtaeBNEICbRFSUsU7Q7hYIkfwXLIXUIS8v0k": {
+          "GetRawImageDataLambdaVersionaaN9glzOzSDzHYBdXJe1EA9AUbCfoT9CRgfeAXKqVg": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "GetRawImageDataLambdaFunction"
               },
-              "CodeSha256": "996IFmkmiNvKqbU9HCIuUg7e1L+/AzcPYWF0jsWOX9k="
+              "CodeSha256": "jAKyg2YCy+VkN7gQLf4ancvdp7s4ib/dhzXKPl1cIBo="
             }
           },
-          "GenerateDocumentLambdaVersion1OaFGkekmW6fLSNLBU7BsP06DNpUeHXJx3Cnjt3f6g": {
+          "GenerateDocumentLambdaVersion5pt2zRBJiLQriT1EB1VSwDUW6lzOkZbnlNYHm9KhU": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "GenerateDocumentLambdaFunction"
               },
-              "CodeSha256": "996IFmkmiNvKqbU9HCIuUg7e1L+/AzcPYWF0jsWOX9k="
+              "CodeSha256": "jAKyg2YCy+VkN7gQLf4ancvdp7s4ib/dhzXKPl1cIBo="
             }
           },
-          "LoginLambdaVersionDrwBiQ0rQw9uYhzfQPwzLXRGFnO8zTNpwhDDogMTMc": {
+          "LoginLambdaVersionD73V3jVbJWDJcpbx3YozaVlmpOnenZtuvccQR5q8": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "LoginLambdaFunction"
               },
-              "CodeSha256": "996IFmkmiNvKqbU9HCIuUg7e1L+/AzcPYWF0jsWOX9k="
+              "CodeSha256": "jAKyg2YCy+VkN7gQLf4ancvdp7s4ib/dhzXKPl1cIBo="
             }
           },
-          "RegisterLambdaVersionL99r06Pg5UKdDgf1KOBOIw3JrMfseTNVKL39c4YB94A": {
+          "RegisterLambdaVersionaSWurtnYINjV2vS3OZSOv2Vp5AqmQIiQ98YTBgZVc": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "RegisterLambdaFunction"
               },
-              "CodeSha256": "996IFmkmiNvKqbU9HCIuUg7e1L+/AzcPYWF0jsWOX9k="
+              "CodeSha256": "jAKyg2YCy+VkN7gQLf4ancvdp7s4ib/dhzXKPl1cIBo="
             }
           },
-          "Oauth2LoginLambdaVersion9sArrIfGc4wn4RFGD2PUuKd43PaYIIniJGNmXG9g4": {
+          "Oauth2LoginLambdaVersionO0chPxst94P1fELcGfTM0f4iLGrKTwwZ6mLbahyBpc": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "Oauth2LoginLambdaFunction"
               },
-              "CodeSha256": "996IFmkmiNvKqbU9HCIuUg7e1L+/AzcPYWF0jsWOX9k="
+              "CodeSha256": "jAKyg2YCy+VkN7gQLf4ancvdp7s4ib/dhzXKPl1cIBo="
             }
           },
-          "Oauth2CallBackLambdaVersionNUdupVOeh8BLYfvjvDfg5vlqByxdmNE8C6eoyYtk": {
+          "Oauth2CallBackLambdaVersionbG2ZtJhTxWSGZlziiG458W3tCrzkE3WnLh3NSkbAY": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "Oauth2CallBackLambdaFunction"
               },
-              "CodeSha256": "996IFmkmiNvKqbU9HCIuUg7e1L+/AzcPYWF0jsWOX9k="
+              "CodeSha256": "jAKyg2YCy+VkN7gQLf4ancvdp7s4ib/dhzXKPl1cIBo="
             }
           },
           "ApiGatewayRestApi": {
@@ -1226,7 +1226,7 @@
               "Oauth2CallBackLambdaPermissionApiGateway"
             ]
           },
-          "ApiGatewayDeployment1704734924135": {
+          "ApiGatewayDeployment1716633099252": {
             "Type": "AWS::ApiGateway::Deployment",
             "Properties": {
               "RestApiId": {
@@ -1630,7 +1630,7 @@
           "FileUploadLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "FileUploadLambdaVersionfUw1iL9Z0VqvJM3q1HHN3fFPi3JVXaOzfvKO6aY"
+              "Ref": "FileUploadLambdaVersion0uWBUSYVZJxIDmCLxOcPWEw2xK7fPiyNVI3N0gAlg8"
             },
             "Export": {
               "Name": "sls-throttle-backend-apis-prod-FileUploadLambdaFunctionQualifiedArn"
@@ -1639,7 +1639,7 @@
           "UserActionLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "UserActionLambdaVersioniVNiNCDKuI0Cqkdrq320xpeaiJfZfyebsBELztZPjYc"
+              "Ref": "UserActionLambdaVersionaNmEsLthzcCnYvtp2zzJdoaoZ6lZJvbUVy8kON4Ek"
             },
             "Export": {
               "Name": "sls-throttle-backend-apis-prod-UserActionLambdaFunctionQualifiedArn"
@@ -1648,7 +1648,7 @@
           "DeleteUserActionLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "DeleteUserActionLambdaVersionEZprIuGBDMh2v5pxLsdBckQqjEtlO1tF07d6catM6g"
+              "Ref": "DeleteUserActionLambdaVersionpE0b3uFbjAPJoGHNAdeeg2UIjkrHPXR3YITwuqCNIY"
             },
             "Export": {
               "Name": "sls-throttle-backend-apis-prod-DeleteUserActionLambdaFunctionQualifiedArn"
@@ -1657,7 +1657,7 @@
           "GetRawErrorDataLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "GetRawErrorDataLambdaVersionBKQ7sVJJ6zLPVHAf6Uj56d6uo0ggAFLm1OUTv9KZ0"
+              "Ref": "GetRawErrorDataLambdaVersionFBiDr0JRc7OUmxqscHdtIS4iyyMM1YjNIuGWNIOG4"
             },
             "Export": {
               "Name": "sls-throttle-backend-apis-prod-GetRawErrorDataLambdaFunctionQualifiedArn"
@@ -1666,7 +1666,7 @@
           "GetRawImageDataLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "GetRawImageDataLambdaVersionJRdqn9MtaeBNEICbRFSUsU7Q7hYIkfwXLIXUIS8v0k"
+              "Ref": "GetRawImageDataLambdaVersionaaN9glzOzSDzHYBdXJe1EA9AUbCfoT9CRgfeAXKqVg"
             },
             "Export": {
               "Name": "sls-throttle-backend-apis-prod-GetRawImageDataLambdaFunctionQualifiedArn"
@@ -1675,7 +1675,7 @@
           "GenerateDocumentLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "GenerateDocumentLambdaVersion1OaFGkekmW6fLSNLBU7BsP06DNpUeHXJx3Cnjt3f6g"
+              "Ref": "GenerateDocumentLambdaVersion5pt2zRBJiLQriT1EB1VSwDUW6lzOkZbnlNYHm9KhU"
             },
             "Export": {
               "Name": "sls-throttle-backend-apis-prod-GenerateDocumentLambdaFunctionQualifiedArn"
@@ -1684,7 +1684,7 @@
           "LoginLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "LoginLambdaVersionDrwBiQ0rQw9uYhzfQPwzLXRGFnO8zTNpwhDDogMTMc"
+              "Ref": "LoginLambdaVersionD73V3jVbJWDJcpbx3YozaVlmpOnenZtuvccQR5q8"
             },
             "Export": {
               "Name": "sls-throttle-backend-apis-prod-LoginLambdaFunctionQualifiedArn"
@@ -1693,7 +1693,7 @@
           "RegisterLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "RegisterLambdaVersionL99r06Pg5UKdDgf1KOBOIw3JrMfseTNVKL39c4YB94A"
+              "Ref": "RegisterLambdaVersionaSWurtnYINjV2vS3OZSOv2Vp5AqmQIiQ98YTBgZVc"
             },
             "Export": {
               "Name": "sls-throttle-backend-apis-prod-RegisterLambdaFunctionQualifiedArn"
@@ -1702,7 +1702,7 @@
           "Oauth2LoginLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "Oauth2LoginLambdaVersion9sArrIfGc4wn4RFGD2PUuKd43PaYIIniJGNmXG9g4"
+              "Ref": "Oauth2LoginLambdaVersionO0chPxst94P1fELcGfTM0f4iLGrKTwwZ6mLbahyBpc"
             },
             "Export": {
               "Name": "sls-throttle-backend-apis-prod-Oauth2LoginLambdaFunctionQualifiedArn"
@@ -1711,7 +1711,7 @@
           "Oauth2CallBackLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "Oauth2CallBackLambdaVersionNUdupVOeh8BLYfvjvDfg5vlqByxdmNE8C6eoyYtk"
+              "Ref": "Oauth2CallBackLambdaVersionbG2ZtJhTxWSGZlziiG458W3tCrzkE3WnLh3NSkbAY"
             },
             "Export": {
               "Name": "sls-throttle-backend-apis-prod-Oauth2CallBackLambdaFunctionQualifiedArn"
@@ -1856,7 +1856,7 @@
         "timeout": 6,
         "runtime": "go1.x",
         "vpc": {},
-        "versionLogicalId": "FileUploadLambdaVersionfUw1iL9Z0VqvJM3q1HHN3fFPi3JVXaOzfvKO6aY"
+        "versionLogicalId": "FileUploadLambdaVersion0uWBUSYVZJxIDmCLxOcPWEw2xK7fPiyNVI3N0gAlg8"
       },
       "UserAction": {
         "handler": "bin/fileUploadService/main",
@@ -1875,7 +1875,7 @@
         "timeout": 6,
         "runtime": "go1.x",
         "vpc": {},
-        "versionLogicalId": "UserActionLambdaVersioniVNiNCDKuI0Cqkdrq320xpeaiJfZfyebsBELztZPjYc"
+        "versionLogicalId": "UserActionLambdaVersionaNmEsLthzcCnYvtp2zzJdoaoZ6lZJvbUVy8kON4Ek"
       },
       "DeleteUserAction": {
         "handler": "bin/fileUploadService/main",
@@ -1894,7 +1894,7 @@
         "timeout": 6,
         "runtime": "go1.x",
         "vpc": {},
-        "versionLogicalId": "DeleteUserActionLambdaVersionEZprIuGBDMh2v5pxLsdBckQqjEtlO1tF07d6catM6g"
+        "versionLogicalId": "DeleteUserActionLambdaVersionpE0b3uFbjAPJoGHNAdeeg2UIjkrHPXR3YITwuqCNIY"
       },
       "GetRawErrorData": {
         "handler": "bin/fileUploadService/main",
@@ -1913,7 +1913,7 @@
         "timeout": 6,
         "runtime": "go1.x",
         "vpc": {},
-        "versionLogicalId": "GetRawErrorDataLambdaVersionBKQ7sVJJ6zLPVHAf6Uj56d6uo0ggAFLm1OUTv9KZ0"
+        "versionLogicalId": "GetRawErrorDataLambdaVersionFBiDr0JRc7OUmxqscHdtIS4iyyMM1YjNIuGWNIOG4"
       },
       "GetRawImageData": {
         "handler": "bin/fileUploadService/main",
@@ -1932,7 +1932,7 @@
         "timeout": 6,
         "runtime": "go1.x",
         "vpc": {},
-        "versionLogicalId": "GetRawImageDataLambdaVersionJRdqn9MtaeBNEICbRFSUsU7Q7hYIkfwXLIXUIS8v0k"
+        "versionLogicalId": "GetRawImageDataLambdaVersionaaN9glzOzSDzHYBdXJe1EA9AUbCfoT9CRgfeAXKqVg"
       },
       "GenerateDocument": {
         "handler": "bin/fileUploadService/main",
@@ -1951,7 +1951,7 @@
         "timeout": 6,
         "runtime": "go1.x",
         "vpc": {},
-        "versionLogicalId": "GenerateDocumentLambdaVersion1OaFGkekmW6fLSNLBU7BsP06DNpUeHXJx3Cnjt3f6g"
+        "versionLogicalId": "GenerateDocumentLambdaVersion5pt2zRBJiLQriT1EB1VSwDUW6lzOkZbnlNYHm9KhU"
       },
       "Login": {
         "handler": "bin/fileUploadService/main",
@@ -1970,7 +1970,7 @@
         "timeout": 6,
         "runtime": "go1.x",
         "vpc": {},
-        "versionLogicalId": "LoginLambdaVersionDrwBiQ0rQw9uYhzfQPwzLXRGFnO8zTNpwhDDogMTMc"
+        "versionLogicalId": "LoginLambdaVersionD73V3jVbJWDJcpbx3YozaVlmpOnenZtuvccQR5q8"
       },
       "Register": {
         "handler": "bin/fileUploadService/main",
@@ -1989,7 +1989,7 @@
         "timeout": 6,
         "runtime": "go1.x",
         "vpc": {},
-        "versionLogicalId": "RegisterLambdaVersionL99r06Pg5UKdDgf1KOBOIw3JrMfseTNVKL39c4YB94A"
+        "versionLogicalId": "RegisterLambdaVersionaSWurtnYINjV2vS3OZSOv2Vp5AqmQIiQ98YTBgZVc"
       },
       "Oauth2Login": {
         "handler": "bin/fileUploadService/main",
@@ -2008,7 +2008,7 @@
         "timeout": 6,
         "runtime": "go1.x",
         "vpc": {},
-        "versionLogicalId": "Oauth2LoginLambdaVersion9sArrIfGc4wn4RFGD2PUuKd43PaYIIniJGNmXG9g4"
+        "versionLogicalId": "Oauth2LoginLambdaVersionO0chPxst94P1fELcGfTM0f4iLGrKTwwZ6mLbahyBpc"
       },
       "Oauth2CallBack": {
         "handler": "bin/fileUploadService/main",
@@ -2027,7 +2027,7 @@
         "timeout": 6,
         "runtime": "go1.x",
         "vpc": {},
-        "versionLogicalId": "Oauth2CallBackLambdaVersionNUdupVOeh8BLYfvjvDfg5vlqByxdmNE8C6eoyYtk"
+        "versionLogicalId": "Oauth2CallBackLambdaVersionbG2ZtJhTxWSGZlziiG458W3tCrzkE3WnLh3NSkbAY"
       }
     },
     "configValidationMode": "warn",
@@ -2048,7 +2048,7 @@
         ],
         "artifactsS3KeyDirname": "serverless/throttle-backend-apis/prod/code-artifacts",
         "artifact": "/Users/saiteja-ch/Desktop/side_hustle_repos/throttle_backend/.serverless/throttle-backend-apis.zip",
-        "artifactDirectoryName": "serverless/throttle-backend-apis/prod/1704734925748-2024-01-08T17:28:45.748Z"
+        "artifactDirectoryName": "serverless/throttle-backend-apis/prod/1716633100859-2024-05-25T10:31:40.859Z"
       },
       "plugins": {
         "$ref": "$[\"service\"][\"plugins\"]"
@@ -2062,7 +2062,7 @@
     "artifact": "/Users/saiteja-ch/Desktop/side_hustle_repos/throttle_backend/.serverless/throttle-backend-apis.zip"
   },
   "package": {
-    "artifactDirectoryName": "serverless/throttle-backend-apis/prod/1704734925748-2024-01-08T17:28:45.748Z",
+    "artifactDirectoryName": "serverless/throttle-backend-apis/prod/1716633100859-2024-05-25T10:31:40.859Z",
     "artifact": "throttle-backend-apis.zip"
   }
 }

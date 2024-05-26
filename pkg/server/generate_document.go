@@ -55,16 +55,15 @@ func (s *Server) GenerateDocument(c *fiber.Ctx) error {
 		requestText += " " + val.TextContent
 	}
 	requestText += "] Please generate a blog post styled documentation in the manner of a Medium article. The documentation should include the following sections: "
-	requestText += "**[Insert Title Here]**:  **Introduction** Start with an engaging introduction that provides context about the error and its impact. This should be a paragraph. "
+	requestText += "**Introduction** Start with an engaging introduction that provides context about the error and its impact. This should be a paragraph. "
 	requestText += "*Understanding the Error* Provide a detailed explanation of the error, including possible causes and symptoms. This should be a paragraph. "
 	requestText += "*Troubleshooting Steps* Outline a series of troubleshooting steps that were taken to resolve the error. Each step should be detailed and include any relevant commands or code snippets. "
 	requestText += "Commands and code snippets should be wrapped between triple backticks (```). Bullet points should start with *. Subheadings should be marked with a single asterisk (*). "
 	requestText += "Ensure a high amount of emphasis on user-generated inputs (user actions) while making the documentation very elaborate. "
 	requestText += "The documentation should be written strictly in the first person perspective to make it evident that the person personally solved this error. "
 	requestText += "**Conclusion** Summarize the resolution process and offer any additional tips or best practices to avoid similar errors in the future. This should be a paragraph. "
-	requestText += "Formatting guidelines: 1. **Title**: Place between double asterisks and on a new line with no leading spaces (e.g., **Title**). 2. *Subheading*: Place between single asterisks on a new line with no leading spaces (e.g., *Subheading*). "
-	requestText += "3. Paragraph: Regular text. 4. Code/Command: Wrap with triple backticks (```). 5. Bullet Point: Start with an asterisk (*) followed by a space. Example structure: **Title**: -bash: aws: command not found --- "
-	requestText += "**Introduction** This section provides an engaging introduction to the error and its impact. *Understanding the Error* This section details the error, its possible causes, and symptoms. "
+	requestText += "Formatting guidelines: 1. **Introduction**: Place between double asterisks and on a new line with no leading spaces (e.g., **Introduction**). 2. *Subheading*: Place between single asterisks on a new line with no leading spaces (e.g., *Subheading*). "
+	requestText += "3. Paragraph: Regular text. 4. Code/Command: Wrap with triple backticks (```). 5. Bullet Point: Start with an asterisk (*) followed by a space. Example structure: **Introduction** This section provides an engaging introduction to the error and its impact. *Understanding the Error* This section details the error, its possible causes, and symptoms. "
 	requestText += "*Troubleshooting Steps* * Step 1: Identify the Issue ``` aws --version ``` * Step 2: Reinstall AWS CLI ``` sudo pip install awscli --force-reinstall --upgrade ``` "
 	requestText += "**Conclusion** This section summarizes the resolution process and offers additional tips or best practices. Ensure the response follows these guidelines strictly with no extra symbols or empty lines."
 
