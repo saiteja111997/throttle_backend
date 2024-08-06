@@ -22,30 +22,48 @@ type Database struct {
 
 // User model
 type Users struct {
-	ID        int       `gorm:"primaryKey" json:"id"`
-	Username  string    `gorm:"not null" json:"username"`
-	Password  string    `gorm:"not null" json:"password"`
-	Email     string    `gorm:"not null" json:"email"`
-	FullName  string    `gorm:"not null" json:"full_name"`
-	CreatedAt time.Time `gorm:"default:CURRENT_TIMESTAMP" json:"created_at"`
-	UpdatedAt time.Time `gorm:"default:CURRENT_TIMESTAMP" json:"updated_at"`
+	ID         int       `gorm:"primaryKey" json:"id"`
+	Username   string    `gorm:"not null" json:"username"`
+	Password   string    `gorm:"not null" json:"password"`
+	Email      string    `gorm:"not null" json:"email"`
+	FullName   string    `gorm:"not null" json:"full_name"`
+	ProfilePic string    `gorm: "not null"; default:'' json: "profile_pic"`
+	CreatedAt  time.Time `gorm:"default:CURRENT_TIMESTAMP" json:"created_at"`
+	UpdatedAt  time.Time `gorm:"default:CURRENT_TIMESTAMP" json:"updated_at"`
 }
 
 // Errors model with added Status and TimeTaken columns
 type Errors struct {
-	ID          string    `gorm:"primaryKey" json:"id"`
-	UserID      int       `gorm:"not null" json:"user_id"`
-	Title       string    `gorm:"not null" json:"title"`
-	DocFilePath string    `gorm:"not null;default:''" json:"doc_file_path"`
-	Image1      string    `gorm:"not null;default:''" json:"image_1"`
-	Image2      string    `gorm:"not null;default:''" json:"image_2"`
-	Image3      string    `gorm:"not null;default:''" json:"image_3"`
-	Image4      string    `gorm:"not null;default:''" json:"image_4"`
-	Status      Status    `gorm:"not null;default:0" json:"status"`
-	TimeTaken   string    `gorm:"not null" json:"time_taken"`
-	CreatedAt   time.Time `gorm:"default:CURRENT_TIMESTAMP" json:"created_at"`
-	UpdatedAt   time.Time `gorm:"default:CURRENT_TIMESTAMP" json:"updated_at"`
+	ID          string      `gorm:"primaryKey" json:"id"`
+	UserID      int         `gorm:"not null" json:"user_id"`
+	Title       string      `gorm:"not null" json:"title"`
+	DocFilePath string      `gorm:"not null;default:''" json:"doc_file_path"`
+	Image1      string      `gorm:"not null;default:''" json:"image_1"`
+	Image2      string      `gorm:"not null;default:''" json:"image_2"`
+	Image3      string      `gorm:"not null;default:''" json:"image_3"`
+	Image4      string      `gorm:"not null;default:''" json:"image_4"`
+	Status      Status      `gorm:"not null;default:0" json:"status"`
+	Type        JourneyType `gorm:"not null;default:0" json:"type"`
+	TimeTaken   string      `gorm:"not null" json:"time_taken"`
+	CreatedAt   time.Time   `gorm:"default:CURRENT_TIMESTAMP" json:"created_at"`
+	UpdatedAt   time.Time   `gorm:"default:CURRENT_TIMESTAMP" json:"updated_at"`
 }
+
+// Doc model with added Status and TimeTaken columns
+// type Docs struct {
+// 	ID          string    `gorm:"primaryKey" json:"id"`
+// 	UserID      int       `gorm:"not null" json:"user_id"`
+// 	Title       string    `gorm:"not null" json:"title"`
+// 	DocFilePath string    `gorm:"not null;default:''" json:"doc_file_path"`
+// 	Image1      string    `gorm:"not null;default:''" json:"image_1"`
+// 	Image2      string    `gorm:"not null;default:''" json:"image_2"`
+// 	Image3      string    `gorm:"not null;default:''" json:"image_3"`
+// 	Image4      string    `gorm:"not null;default:''" json:"image_4"`
+// 	Status      Status    `gorm:"not null;default:0" json:"status"`
+// 	TimeTaken   string    `gorm:"not null" json:"time_taken"`
+// 	CreatedAt   time.Time `gorm:"default:CURRENT_TIMESTAMP" json:"created_at"`
+// 	UpdatedAt   time.Time `gorm:"default:CURRENT_TIMESTAMP" json:"updated_at"`
+// }
 
 // UsefulType is an enumeration type for the Useful column
 type UsefulType int
@@ -53,6 +71,14 @@ type UsefulType int
 const (
 	NotUseful UsefulType = iota // 0
 	Useful                      // 1
+)
+
+// UsefulType is an enumeration type for the Useful column
+type JourneyType int
+
+const (
+	ErrorJourney JourneyType = iota // 0
+	DocJourney                      // 1
 )
 
 // UserActions model with updated Useful column as an enum

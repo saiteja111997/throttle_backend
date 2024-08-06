@@ -55,6 +55,9 @@ func (s *Server) Login(c *fiber.Ctx) error {
 		return c.Status(http.StatusUnauthorized).JSON(fiber.Map{"error": "Authentication failed"})
 	}
 
-	return c.Status(http.StatusOK).JSON(fiber.Map{"message": "Login successful"})
+	return c.Status(http.StatusOK).JSON(fiber.Map{
+		"message": "Login successful",
+		"userId":  user.ID,
+	})
 
 }

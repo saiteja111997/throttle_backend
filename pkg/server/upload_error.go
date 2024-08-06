@@ -61,6 +61,7 @@ func (s *Server) UploadError(c *fiber.Ctx) error {
 		ID:     uniqueID,
 		Title:  title,
 		Status: 0,
+		Type:   0,
 	}
 
 	count := 1
@@ -123,22 +124,26 @@ func (s *Server) InsertUserActions(c *fiber.Ctx) error {
 	text := c.FormValue("text")
 	error_id := c.FormValue("error_id")
 	user_id := c.FormValue("user_id")
+
+	fmt.Println("Printing user id in user action api : ", user_id)
+
 	user_id_int, err := strconv.Atoi(user_id)
 
-	startContainer := c.FormValue("startContainer")
-	endContainer := c.FormValue("endContainer")
-	startOffset := c.FormValue("startOffset")
-	endOffset := c.FormValue("endOffset")
-	currentURL := c.FormValue("currentURL")
-
-	fmt.Println("startContainer, endContainer, startOffset, endOffset : ", startContainer, endContainer, startOffset, endOffset)
-	fmt.Println("currentURL : ", currentURL)
-
 	if err != nil {
+		fmt.Println("Failed to convert user id to integer : ", err.Error())
 		return c.Status(http.StatusInternalServerError).JSON(fiber.Map{
 			"error": fmt.Sprintf("Failed to convert user id to integer, %v", err),
 		})
 	}
+
+	// startContainer := c.FormValue("startContainer")
+	// endContainer := c.FormValue("endContainer")
+	// startOffset := c.FormValue("startOffset")
+	// endOffset := c.FormValue("endOffset")
+	currentURL := c.FormValue("currentURL")
+
+	// fmt.Println("startContainer, endContainer, startOffset, endOffset : ", startContainer, endContainer, startOffset, endOffset)
+	fmt.Println("currentURL : ", currentURL)
 
 	e := structures.UserActions{
 		TextContent: text,
@@ -220,4 +225,75 @@ func (s *Server) ValidateUserAction(c *fiber.Ctx) error {
 	return c.Status(http.StatusOK).JSON(fiber.Map{
 		"message": "Successfully validated the user action!!",
 	})
+}
+
+func (s *Server) UpdateErrorState(c *fiber.Ctx) error {
+
+	errorID := c.FormValue("error_id")
+	timeElapsed := c.FormValue("elapsed_time")
+
+	fmt.Println("Printing errorID : ", errorID)
+	fmt.Println("Printing timeElapsed : ", timeElapsed)
+
+	result := s.Db.Exec("UPDATE errors SET time_taken = ? WHERE id = ?", timeElapsed, errorID)
+
+	if result.Error != nil {
+		fmt.Println("Error updating record:", result.Error)
+		return result.Error
+	}
+
+	return c.Status(http.StatusOK).JSON(fiber.Map{
+		"message": "Successfully validated the user action!!",
+	})
+}
+
+func (s *Server) UpdateFinalState(c *fiber.Ctx) error {
+
+	errorID := c.FormValue("error_id")
+	finalState := c.FormValue("status")
+
+	finalStateInt, err := strconv.Atoi(finalState)
+
+	if err != nil {
+		c.Status(http.StatusInternalServerError).JSON(fiber.Map{
+			"status": "failure",
+			"error":  err,
+		})
+	}
+
+	fmt.Println("Printing errorID : ", errorID)
+	fmt.Println("Printing timeElapsed : ", finalStateInt)
+
+	result := s.Db.Exec("UPDATE errors SET status = ? WHERE id = ?", finalState, errorID)
+
+	if result.Error != nil {
+		fmt.Println("Error updating record:", result.Error)
+		return result.Error
+	}
+
+	return c.Status(http.StatusOK).JSON(fiber.Map{
+		"message": "Successfully validated the user action!!",
+	})
+}
+
+func (s *Server) GetUnresolvedJourneys(c *fiber.Ctx) error {
+
+	// Define a slice to hold the query results
+	var unresolvedJourneys []structures.GetUnresolvedJourneys
+
+	// Perform the query
+	err := s.Db.Raw("SELECT * FROM errors WHERE status = '0' ORDER BY created_at DESC LIMIT 3").Scan(&unresolvedJourneys).Error
+
+	if err != nil {
+		fmt.Println("Error while fetching from the database: ", err.Error())
+		return c.Status(http.StatusInternalServerError).JSON(fiber.Map{
+			"message": "Failed to fetch from the database",
+		})
+	}
+
+	return c.Status(http.StatusOK).JSON(fiber.Map{
+		"status": "success",
+		"result": unresolvedJourneys,
+	})
+
 }

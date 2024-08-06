@@ -73,7 +73,11 @@ func main() {
 
 	app.Get("/ping", svr.HealthCheck)
 	app.Post("/file_upload/upload_error", svr.UploadError)
+	app.Get("/file_upload/get_latest_unsolved", svr.GetUnresolvedJourneys)
+	app.Post("/file_upload/update_error_state", svr.UpdateErrorState)
+	app.Post("file_upload/update_final_state", svr.UpdateFinalState)
 	app.Post("/generateDocument", svr.GenerateDocument)
+	app.Post("/getDashboard", svr.getDashboard)
 	app.Post("/file_upload/user_action", svr.InsertUserActions)
 	app.Post("/file_upload/delete_user_action", svr.DeleteUserAction)
 	app.Post("/file_upload/validate_user_action", svr.ValidateUserAction)

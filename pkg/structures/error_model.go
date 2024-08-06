@@ -6,6 +6,11 @@ type UserAction struct {
 	Id          int    `json:"id"`
 }
 
+type GetUnresolvedJourneys struct {
+	Title string `json:"title"`
+	Id    string `json:"id"`
+}
+
 type RawErrorResponse struct {
 	ErrorInfo   Errors       `json:"error_info"`
 	UserActions []UserAction `json:"user_actions"`

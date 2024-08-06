@@ -21,17 +21,18 @@ import (
 func (s *Server) GenerateDocument(c *fiber.Ctx) error {
 	fmt.Println("Start request!!")
 
-	errorID := c.FormValue("error_id")
-	fmt.Println("Printing error_id : ", errorID)
+	id := c.FormValue("error_id")
 
-	filepath := "/errorDocs/" + errorID
+	fmt.Println("Printing error_id : ", id)
+
+	filepath := "/errorDocs/" + id
 
 	geminiApiEndPoint := "https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key="
 
 	var userActions []structures.UserAction
 	var errorData structures.Errors
 
-	err := s.Db.Where("error_id = ?", errorID).Find(&userActions).Error
+	err := s.Db.Where("error_id = ? AND useful = 1", id).Find(&userActions).Error
 	if err != nil {
 		fmt.Println("Error fetching user action data from db : ", err.Error())
 		return c.Status(http.StatusInternalServerError).JSON(fiber.Map{
@@ -40,7 +41,7 @@ func (s *Server) GenerateDocument(c *fiber.Ctx) error {
 		})
 	}
 
-	err = s.Db.Where("id = ?", errorID).Find(&errorData).Error
+	err = s.Db.Where("id = ?", id).Find(&errorData).Error
 	fmt.Println("Printing Title : ", errorData.Title)
 	if err != nil {
 		fmt.Println("Error fetching error data from db : ", err.Error())
@@ -64,7 +65,8 @@ func (s *Server) GenerateDocument(c *fiber.Ctx) error {
 	requestText += "**Conclusion** Summarize the resolution process and offer any additional tips or best practices to avoid similar errors in the future. This should be a paragraph. "
 	requestText += "Formatting guidelines: 1. **Introduction**: Place between double asterisks and on a new line with no leading spaces (e.g., **Introduction**). 2. *Subheading*: Place between single asterisks on a new line with no leading spaces (e.g., *Subheading*). "
 	requestText += "3. Paragraph: Regular text. 4. Code/Command: Wrap with triple backticks (```). 5. Bullet Point: Start with an asterisk (*) followed by a space. Example structure: **Introduction** This section provides an engaging introduction to the error and its impact. *Understanding the Error* This section details the error, its possible causes, and symptoms. "
-	requestText += "*Troubleshooting Steps* * Step 1: Identify the Issue ``` aws --version ``` * Step 2: Reinstall AWS CLI ``` sudo pip install awscli --force-reinstall --upgrade ``` "
+	// requestText += "*Troubleshooting Steps* * Step 1: Identify the Issue ``` aws --version ``` * Step 2: Reinstall AWS CLI ``` sudo pip install awscli --force-reinstall --upgrade ``` "
+	requestText += "*Troubleshooting Steps* * Step 1: some text and commands or code if necessary  * Step 2: some text and commands or code if necessary"
 	requestText += "**Conclusion** This section summarizes the resolution process and offers additional tips or best practices. Ensure the response follows these guidelines strictly with no extra symbols or empty lines."
 
 	requestData := structures.GeminiAIRequest{
@@ -122,7 +124,7 @@ func (s *Server) GenerateDocument(c *fiber.Ctx) error {
 		return err
 	}
 
-	fmt.Println("Printing the response before extracting the text : ", geminiResponse)
+	// fmt.Println("Printing the response before extracting the text : ", geminiResponse)
 
 	if len(geminiResponse.Candidates) > 0 && len(geminiResponse.Candidates[0].Content.Parts) > 0 {
 		text := geminiResponse.Candidates[0].Content.Parts[0].Text
@@ -130,16 +132,25 @@ func (s *Server) GenerateDocument(c *fiber.Ctx) error {
 		// Remove "---" from the text
 		text = strings.ReplaceAll(text, "---", "")
 
+		// UPLOAD TO S3
 		err := helpers.UploadTextToS3(text, filepath, awsRegion, s3Bucket)
 		if err != nil {
 			log.Fatal("Unable to upload the error to S3 bucket")
 		}
 
-		if err := updateDocFilePath(s.Db, errorID, filepath); err != nil {
+		if err := updateDocFilePath(s.Db, id, filepath); err != nil {
 			log.Fatalf("failed to update doc file path: %v", err)
 		}
 
 		log.Println("DocFilePath updated successfully")
+
+		// UPDATE THE DOC PATH IN DB
+		// result := s.Db.Exec("UPDATE errors SET time_taken = ? WHERE id = ?", timeElapsed, errorID)
+
+		// if result.Error != nil {
+		// 	fmt.Println("Error updating record:", result.Error)
+		// 	return result.Error
+		// }
 
 		fmt.Println("Here is the response from Gemini Ai : ", text)
 
@@ -152,6 +163,8 @@ func (s *Server) GenerateDocument(c *fiber.Ctx) error {
 
 	return err
 }
+
+// func (s *Server) updateSavedFileState
 
 func updateDocFilePath(db *gorm.DB, errorID string, newDocFilePath string) error {
 	result := db.Model(&structures.Errors{}).Where("id = ?", errorID).Update("doc_file_path", newDocFilePath)
