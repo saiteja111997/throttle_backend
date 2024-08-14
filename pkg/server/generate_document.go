@@ -11,7 +11,6 @@ import (
 	"strings"
 
 	"github.com/gofiber/fiber/v2"
-	"github.com/jinzhu/gorm"
 	"github.com/joho/godotenv"
 
 	helpers "github.com/saiteja111997/throttle_backend/pkg/helper"
@@ -138,7 +137,7 @@ func (s *Server) GenerateDocument(c *fiber.Ctx) error {
 			log.Fatal("Unable to upload the error to S3 bucket")
 		}
 
-		if err := updateDocFilePath(s.Db, id, filepath); err != nil {
+		if err := helpers.UpdateDocFilePath(s.Db, id, filepath); err != nil {
 			log.Fatalf("failed to update doc file path: %v", err)
 		}
 
@@ -165,8 +164,3 @@ func (s *Server) GenerateDocument(c *fiber.Ctx) error {
 }
 
 // func (s *Server) updateSavedFileState
-
-func updateDocFilePath(db *gorm.DB, errorID string, newDocFilePath string) error {
-	result := db.Model(&structures.Errors{}).Where("id = ?", errorID).Update("doc_file_path", newDocFilePath)
-	return result.Error
-}

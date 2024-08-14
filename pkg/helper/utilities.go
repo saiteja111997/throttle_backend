@@ -10,6 +10,8 @@ import (
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/s3"
+	"github.com/jinzhu/gorm"
+	"github.com/saiteja111997/throttle_backend/pkg/structures"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -175,4 +177,14 @@ func HashPassword(password string) (string, error) {
 		return "", err
 	}
 	return string(hashedPassword), nil
+}
+
+func UpdateDocFilePath(db *gorm.DB, errorID string, newDocFilePath string) error {
+	result := db.Model(&structures.Errors{}).Where("id = ?", errorID).Update("doc_file_path", newDocFilePath)
+	return result.Error
+}
+
+func UpdateDocStatus(db *gorm.DB, errorID string) error {
+	result := db.Model(&structures.Errors{}).Where("id = ?", errorID).Update("status", "2")
+	return result.Error
 }

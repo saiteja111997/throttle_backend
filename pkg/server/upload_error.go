@@ -282,7 +282,7 @@ func (s *Server) GetUnresolvedJourneys(c *fiber.Ctx) error {
 	var unresolvedJourneys []structures.GetUnresolvedJourneys
 
 	// Perform the query
-	err := s.Db.Raw("SELECT * FROM errors WHERE status = '0' ORDER BY created_at DESC LIMIT 3").Scan(&unresolvedJourneys).Error
+	err := s.Db.Raw("SELECT * FROM errors WHERE status = '0' ORDER BY created_at DESC").Scan(&unresolvedJourneys).Error
 
 	if err != nil {
 		fmt.Println("Error while fetching from the database: ", err.Error())
