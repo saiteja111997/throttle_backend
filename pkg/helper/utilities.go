@@ -184,7 +184,7 @@ func UpdateDocFilePath(db *gorm.DB, errorID string, newDocFilePath string) error
 	return result.Error
 }
 
-func UpdateDocStatus(db *gorm.DB, errorID string) error {
-	result := db.Model(&structures.Errors{}).Where("id = ?", errorID).Update("status", "2")
+func UpdateDocStatus(db *gorm.DB, errorID, status string) error {
+	result := db.Model(&structures.Errors{}).Where("id = ?", errorID).Update("status", status)
 	return result.Error
 }

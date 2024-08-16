@@ -19,7 +19,7 @@ func (s *Server) GetDashboard(c *fiber.Ctx) error {
 	var dashboardData []structures.DashboardData
 
 	// Perform the query
-	err := s.Db.Raw("SELECT * FROM errors WHERE status = '1' AND status = '2' ORDER BY created_at DESC").Scan(&dashboardData).Error
+	err := s.Db.Raw("SELECT * FROM errors WHERE (status = '1' OR status = '2') AND user_id = ? ORDER BY created_at DESC", userId).Scan(&dashboardData).Error
 
 	if err != nil {
 		fmt.Println("Error while fetching from the database: ", err.Error())
@@ -27,6 +27,8 @@ func (s *Server) GetDashboard(c *fiber.Ctx) error {
 			"message": "Failed to fetch from the database",
 		})
 	}
+
+	fmt.Println("Length of dashboard data : ", len(dashboardData))
 
 	return c.Status(http.StatusOK).JSON(fiber.Map{
 		"status": "success",
@@ -65,9 +67,10 @@ func (s *Server) PublishDoc(c *fiber.Ctx) error {
 
 	textContent := c.FormValue("content")
 	id := c.FormValue("id")
+	status := c.FormValue("status")
 
-	fmt.Println("Printing content : ", textContent)
-
+	// fmt.Println("Printing content : ", textContent)
+	fmt.Println("Printing status : ", status)
 	filepath := "/errorDocs/" + id
 
 	err := helpers.UploadTextToS3(textContent, filepath, awsRegion, s3Bucket)
@@ -75,10 +78,11 @@ func (s *Server) PublishDoc(c *fiber.Ctx) error {
 		log.Fatal("Unable to upload the error to S3 bucket")
 	}
 
-	err = helpers.UpdateDocStatus(s.Db, id)
+	err = helpers.UpdateDocStatus(s.Db, id, status)
 	if err != nil {
 		log.Fatal("Unable to update doc status!!")
 	}
+	fmt.Println("Successfully uploaded the document to s3!!")
 
 	return c.Status(http.StatusOK).JSON(fiber.Map{
 		"status": "success",

@@ -21,8 +21,10 @@ func (s *Server) GenerateDocument(c *fiber.Ctx) error {
 	fmt.Println("Start request!!")
 
 	id := c.FormValue("error_id")
+	status := c.FormValue("status")
 
 	fmt.Println("Printing error_id : ", id)
+	fmt.Println("Printing status : ", status)
 
 	filepath := "/errorDocs/" + id
 
@@ -80,7 +82,7 @@ func (s *Server) GenerateDocument(c *fiber.Ctx) error {
 		},
 	}
 
-	fmt.Println("Printing the whole string : ", requestData.Contents[0].Parts[0].Text)
+	// fmt.Println("Printing the whole string : ", requestData.Contents[0].Parts[0].Text)
 
 	requestBody, err := json.Marshal(requestData)
 	if err != nil {
@@ -142,6 +144,12 @@ func (s *Server) GenerateDocument(c *fiber.Ctx) error {
 		}
 
 		log.Println("DocFilePath updated successfully")
+
+		if err := helpers.UpdateDocStatus(s.Db, id, status); err != nil {
+			log.Fatalf("failed to update doc status: %v", err)
+		}
+
+		log.Println("Doc status updated successfully")
 
 		// UPDATE THE DOC PATH IN DB
 		// result := s.Db.Exec("UPDATE errors SET time_taken = ? WHERE id = ?", timeElapsed, errorID)
