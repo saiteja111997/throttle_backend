@@ -13,13 +13,15 @@ import (
 func (s *Server) GetDashboard(c *fiber.Ctx) error {
 
 	userId := c.FormValue("user_id")
+	docType := c.FormValue("status")
 
 	fmt.Println("Printing userId : ", userId)
+	fmt.Println("Printing docType : ", docType)
 
 	var dashboardData []structures.DashboardData
 
 	// Perform the query
-	err := s.Db.Raw("SELECT * FROM errors WHERE (status = '1' OR status = '2') AND user_id = ? ORDER BY created_at DESC", userId).Scan(&dashboardData).Error
+	err := s.Db.Raw("SELECT * FROM errors WHERE status = ? AND user_id = ? ORDER BY created_at DESC", docType, userId).Scan(&dashboardData).Error
 
 	if err != nil {
 		fmt.Println("Error while fetching from the database: ", err.Error())

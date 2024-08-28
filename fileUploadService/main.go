@@ -37,18 +37,18 @@ func main() {
 		log.Fatalf("Error loading environment variables file")
 	}
 
-	//ctx := context.Background()
-	if err := waitForHost("mydbinstance.c1cnaivzlk0f.us-east-1.rds.amazonaws.com", "5432"); err != nil {
-		log.Fatalln(err)
-	}
-
-	fmt.Println("Connection established")
-
 	DB_USERNAME := os.Getenv("DB_USERNAME")
 	DB_PASSWORD := os.Getenv("DB_PASSWORD")
 	DB_HOSTNAME := os.Getenv("DB_HOSTNAME")
 	DB_PORT := os.Getenv("DB_PORT")
 	DATABASE := os.Getenv("DATABASE")
+
+	//ctx := context.Background()
+	if err := waitForHost(DB_HOSTNAME, DB_PORT); err != nil {
+		log.Fatalln(err)
+	}
+
+	fmt.Println("Connection established")
 
 	db, err := helpers.Open(helpers.Config{
 		Username: DB_USERNAME,
