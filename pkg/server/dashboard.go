@@ -43,7 +43,7 @@ func (s *Server) GetDashboardDoc(c *fiber.Ctx) error {
 
 	docFilePath := c.FormValue("doc_file_path")
 
-	fmt.Println("Printing error id : ", docFilePath)
+	fmt.Println("Printing doc file path : ", docFilePath)
 
 	// Downloading the text from s3
 
@@ -56,11 +56,13 @@ func (s *Server) GetDashboardDoc(c *fiber.Ctx) error {
 		})
 	}
 
-	fmt.Println("Printing the doc content : ", docContent)
+	docContentString := string(docContent)
+
+	fmt.Println("Printing the doc content : ", docContentString)
 
 	return c.Status(http.StatusOK).JSON(fiber.Map{
 		"status": "success",
-		"result": docContent,
+		"result": docContentString,
 	})
 
 }
