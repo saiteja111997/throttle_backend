@@ -32,6 +32,10 @@ func (s *Server) GetDashboard(c *fiber.Ctx) error {
 
 	fmt.Println("Length of dashboard data : ", len(dashboardData))
 
+	for _, val := range dashboardData {
+		val.Status = docType
+	}
+
 	return c.Status(http.StatusOK).JSON(fiber.Map{
 		"status": "success",
 		"result": dashboardData,

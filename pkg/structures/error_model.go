@@ -24,4 +24,5 @@ type DashboardData struct {
 	Id          string `json:"id"`
 	Title       string `json:"title"`
 	DocFilePath string `json:"doc_file_path"`
+	Status      string `json:"status"`
 }
