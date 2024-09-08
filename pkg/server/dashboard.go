@@ -46,8 +46,12 @@ func (s *Server) GetDashboard(c *fiber.Ctx) error {
 func (s *Server) GetDashboardDoc(c *fiber.Ctx) error {
 
 	docFilePath := c.FormValue("doc_file_path")
+	error_id := c.FormValue("error_id")
 
 	fmt.Println("Printing doc file path : ", docFilePath)
+	fmt.Println("Error id : ", error_id)
+
+	var errorData structures.Errors
 
 	// Downloading the text from s3
 
@@ -62,11 +66,22 @@ func (s *Server) GetDashboardDoc(c *fiber.Ctx) error {
 
 	docContentString := string(docContent)
 
-	fmt.Println("Printing the doc content : ", docContentString)
+	err = s.Db.Where("id = ?", error_id).Find(&errorData).Error
+	fmt.Println("Printing Title : ", errorData.Title)
+	if err != nil {
+		fmt.Println("Error fetching error data from db : ", err.Error())
+		return c.Status(http.StatusInternalServerError).JSON(fiber.Map{
+			"status": "error",
+			"error":  "Failed to fetch error data",
+		})
+	}
+
+	// fmt.Println("Printing the doc content : ", docContentString)
 
 	return c.Status(http.StatusOK).JSON(fiber.Map{
 		"status": "success",
 		"result": docContentString,
+		"title":  errorData.Title,
 	})
 
 }
@@ -98,4 +113,46 @@ func (s *Server) PublishDoc(c *fiber.Ctx) error {
 		"result": "Successfully uploaded the doc",
 	})
 
+}
+
+func (s *Server) SaveDoc(c *fiber.Ctx) error {
+
+	textContent := c.FormValue("content")
+	id := c.FormValue("id")
+
+	// fmt.Println("Printing content : ", textContent)
+	fmt.Println("Printing error id : ", id)
+	filepath := "/errorDocs/" + id
+
+	err := helpers.UploadTextToS3(textContent, filepath, awsRegion, s3Bucket)
+	if err != nil {
+		log.Fatal("Unable to upload the error to S3 bucket")
+	}
+	fmt.Println("Successfully uploaded the document to s3!!")
+
+	return c.Status(http.StatusOK).JSON(fiber.Map{
+		"status": "success",
+		"result": "Successfully uploaded the doc",
+	})
+
+}
+
+func (s *Server) DeleteDoc(c *fiber.Ctx) error {
+	errorID := c.FormValue("error_id")
+	docFilePath := c.FormValue("doc_file_path")
+
+	err := helpers.DeleteFromS3(docFilePath, awsRegion, s3Bucket)
+	if err != nil {
+		log.Fatal("Unable to delete the error from S3 bucket")
+	}
+
+	err = helpers.DeleteDocFromDB(s.Db, errorID)
+	if err != nil {
+		log.Fatal("Unable to delete doc from db!!", err.Error())
+	}
+	fmt.Println("Successfully deleted the document from s3 and db!!")
+
+	return c.Status(http.StatusOK).JSON(fiber.Map{
+		"message": "Successfully deleted the user action!!",
+	})
 }

@@ -172,6 +172,46 @@ func DownloadTextFromS3(objectKey, awsRegion, s3Bucket string) (string, error) {
 	return string(textContent), nil
 }
 
+func DeleteFromS3(objectKey, awsRegion, s3Bucket string) error {
+	// Create an AWS session
+	sess, err := session.NewSession(&aws.Config{
+		Region: aws.String(awsRegion),
+	})
+	if err != nil {
+		fmt.Printf("Unable to create session for deleting from S3: %v\n", err)
+		return err
+	}
+
+	// Create an S3 service client
+	s3Client := s3.New(sess)
+
+	// Prepare the S3 input parameters
+	params := &s3.DeleteObjectInput{
+		Bucket: aws.String(s3Bucket),
+		Key:    aws.String(objectKey),
+	}
+
+	// Delete the object from S3
+	_, err = s3Client.DeleteObject(params)
+	if err != nil {
+		fmt.Printf("Unable to delete from S3 due to error: %v\n", err)
+		return err
+	}
+
+	// Wait until the object is deleted to ensure it's gone
+	err = s3Client.WaitUntilObjectNotExists(&s3.HeadObjectInput{
+		Bucket: aws.String(s3Bucket),
+		Key:    aws.String(objectKey),
+	})
+	if err != nil {
+		fmt.Printf("Error occurred while waiting for the object to be deleted from S3: %v\n", err)
+		return err
+	}
+
+	fmt.Println("Successfully deleted the document from S3!")
+	return nil
+}
+
 func HashPassword(password string) (string, error) {
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
 	if err != nil {
@@ -197,4 +237,13 @@ func UpdateDocStatus(db *gorm.DB, errorID, status string) error {
 	result := db.Model(&structures.Errors{}).Where("id = ?", errorID).Update("status", statusInt)
 	return result.Error
 
+}
+
+func DeleteDocFromDB(db *gorm.DB, errorID string) error {
+	result := db.Where("id = ?", errorID).Delete(&structures.Errors{})
+	if result.Error != nil {
+		fmt.Printf("Unable to delete doc from DB: %v", result.Error)
+		return result.Error
+	}
+	return nil
 }

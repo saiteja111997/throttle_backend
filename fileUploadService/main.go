@@ -80,6 +80,8 @@ func main() {
 	app.Post("/dashboard/getDashboard", svr.GetDashboard)
 	app.Post("/dashboard/getDashboardDoc", svr.GetDashboardDoc)
 	app.Post("/dashboard/publishDoc", svr.PublishDoc)
+	app.Post("/dashboard/saveDoc", svr.SaveDoc)
+	app.Post("/dashboard/deleteDoc", svr.DeleteDoc)
 	app.Post("/file_upload/user_action", svr.InsertUserActions)
 	app.Post("/file_upload/delete_user_action", svr.DeleteUserAction)
 	app.Post("/file_upload/validate_user_action", svr.ValidateUserAction)
