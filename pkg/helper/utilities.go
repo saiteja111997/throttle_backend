@@ -5,6 +5,7 @@ import (
 	"io/ioutil"
 	"mime/multipart"
 	"os"
+	"strconv"
 	"strings"
 
 	"github.com/aws/aws-sdk-go/aws"
@@ -185,6 +186,15 @@ func UpdateDocFilePath(db *gorm.DB, errorID string, newDocFilePath string) error
 }
 
 func UpdateDocStatus(db *gorm.DB, errorID, status string) error {
-	result := db.Model(&structures.Errors{}).Where("id = ?", errorID).Update("status", status)
+
+	statusInt, err := strconv.Atoi(status)
+	if err != nil {
+		// Handle error, e.g., log or return
+		fmt.Printf("Error converting status to int: %v\n", err)
+		return err
+	}
+
+	result := db.Model(&structures.Errors{}).Where("id = ?", errorID).Update("status", statusInt)
 	return result.Error
+
 }

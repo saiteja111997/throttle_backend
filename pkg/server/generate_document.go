@@ -165,6 +165,7 @@ func (s *Server) GenerateDocument(c *fiber.Ctx) error {
 		return c.Status(http.StatusOK).JSON(fiber.Map{
 			"status":   "success",
 			"response": text,
+			"title":    errorData.Title,
 		})
 	}
 

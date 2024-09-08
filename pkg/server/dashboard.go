@@ -79,6 +79,7 @@ func (s *Server) PublishDoc(c *fiber.Ctx) error {
 
 	// fmt.Println("Printing content : ", textContent)
 	fmt.Println("Printing status : ", status)
+	fmt.Println("Printing error id : ", id)
 	filepath := "/errorDocs/" + id
 
 	err := helpers.UploadTextToS3(textContent, filepath, awsRegion, s3Bucket)
@@ -88,7 +89,7 @@ func (s *Server) PublishDoc(c *fiber.Ctx) error {
 
 	err = helpers.UpdateDocStatus(s.Db, id, status)
 	if err != nil {
-		log.Fatal("Unable to update doc status!!")
+		log.Fatal("Unable to update doc status!!", err.Error())
 	}
 	fmt.Println("Successfully uploaded the document to s3!!")
 
