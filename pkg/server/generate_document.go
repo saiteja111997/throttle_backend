@@ -159,7 +159,7 @@ func (s *Server) GenerateDocument(c *fiber.Ctx) error {
 		// 	return result.Error
 		// }
 
-		fmt.Println("Here is the response from Gemini Ai : ", text)
+		// fmt.Println("Here is the response from Gemini Ai : ", text)
 
 		c.Set("Content-Type", "application/json")
 		return c.Status(http.StatusOK).JSON(fiber.Map{
