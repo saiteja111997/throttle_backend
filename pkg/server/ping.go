@@ -18,6 +18,7 @@ func (s *Server) HealthCheck(c *fiber.Ctx) error {
 			})
 		} else {
 			fmt.Println("DB connection is alive!!")
+			break
 		}
 
 		time.Sleep(2 * time.Second)
