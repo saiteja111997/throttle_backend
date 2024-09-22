@@ -27,9 +27,10 @@ func main() {
 
 	// Use the CORS middleware
 	app.Use(cors.New(cors.Config{
-		AllowOrigins: "*",
-		AllowMethods: "GET,POST,PUT,DELETE",
-		AllowHeaders: "Origin, Content-Type, Accept",
+		AllowOrigins:     "http://127.0.0.1:3000",
+		AllowMethods:     "GET,POST,PUT,DELETE",
+		AllowHeaders:     "Origin, Content-Type, Accept",
+		AllowCredentials: true,
 	}))
 
 	err := godotenv.Load(".env")
@@ -73,7 +74,7 @@ func main() {
 
 	app.Get("/ping", svr.HealthCheck)
 	app.Post("/file_upload/upload_error", svr.UploadError)
-	app.Get("/file_upload/get_latest_unsolved", svr.GetUnresolvedJourneys)
+	app.Post("/file_upload/get_latest_unsolved", svr.GetUnresolvedJourneys)
 	app.Post("/file_upload/update_error_state", svr.UpdateErrorState)
 	app.Post("file_upload/update_final_state", svr.UpdateFinalState)
 	app.Post("/generateDocument", svr.GenerateDocument)

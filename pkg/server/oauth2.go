@@ -3,10 +3,13 @@ package server
 import (
 	"context"
 	"encoding/json"
+	"fmt"
+	"log"
 	"net/http"
 	"os"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/joho/godotenv"
 	"golang.org/x/oauth2"
 	"golang.org/x/oauth2/google"
 )
@@ -14,15 +17,24 @@ import (
 var (
 	googleOauthConfig *oauth2.Config
 	oauthStateString  = "random" // Change this to a random string for security
-	clientId          = os.Getenv("CLIENT_ID")
-	clientSecret      = os.Getenv("CLIENT_SECRET")
 )
 
 func init() {
+
+	err := godotenv.Load(".env")
+	if err != nil {
+		log.Fatalf("Error loading environment variables file")
+	}
+
+	clientId := os.Getenv("CLIENT_ID")
+	clientSecret := os.Getenv("CLIENT_SECRET")
+
+	// fmt.Println("Printing client id and secret", clientId, clientSecret)
+
 	googleOauthConfig = &oauth2.Config{
 		ClientID:     clientId,
 		ClientSecret: clientSecret,
-		RedirectURL:  "https://jm4e775kx3.execute-api.us-east-1.amazonaws.com/prod/auth/callback",
+		RedirectURL:  "http://localhost:8080/oauth2/callback",
 		Scopes:       []string{"https://www.googleapis.com/auth/userinfo.email"},
 		Endpoint:     google.Endpoint,
 	}
@@ -50,7 +62,15 @@ func (s *Server) HandleCallback(c *fiber.Ctx) error {
 		return c.Status(http.StatusInternalServerError).SendString(err.Error())
 	}
 
-	return c.JSON(userInfo)
+	fmt.Println("User information : ", userInfo)
+
+	// return c.Status(http.StatusOK).JSON(fiber.Map{
+	// 	"message": "success",
+	// 	"result":  userInfo,
+	// })
+
+	// Once authenticated, redirect back to the frontend
+	return c.Redirect("http://127.0.0.1:3000/dashboard") // Redirect user to your app's dashboard after login
 }
 
 func getUserInfo(token *oauth2.Token) (map[string]interface{}, error) {

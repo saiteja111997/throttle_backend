@@ -279,11 +279,13 @@ func (s *Server) UpdateFinalState(c *fiber.Ctx) error {
 
 func (s *Server) GetUnresolvedJourneys(c *fiber.Ctx) error {
 
+	userId := c.FormValue("user_id")
+
 	// Define a slice to hold the query results
 	var unresolvedJourneys []structures.GetUnresolvedJourneys
 
 	// Perform the query
-	err := s.Db.Raw("SELECT * FROM errors WHERE status = '0' ORDER BY created_at DESC").Scan(&unresolvedJourneys).Error
+	err := s.Db.Raw("SELECT * FROM errors WHERE status = '0' AND user_id = ? ORDER BY created_at DESC", userId).Scan(&unresolvedJourneys).Error
 
 	if err != nil {
 		fmt.Println("Error while fetching from the database: ", err.Error())
@@ -291,6 +293,8 @@ func (s *Server) GetUnresolvedJourneys(c *fiber.Ctx) error {
 			"message": "Failed to fetch from the database",
 		})
 	}
+
+	fmt.Println("No of records found : ", len(unresolvedJourneys))
 
 	return c.Status(http.StatusOK).JSON(fiber.Map{
 		"status": "success",
