@@ -13,40 +13,52 @@ import (
 
 func (s *Server) Register(c *fiber.Ctx) error {
 
-	fullName := c.FormValue("full_name")
+	userName := c.FormValue("user_name")
 	password := c.FormValue("password")
-	email := c.FormValue("email")
 
-	fmt.Println("Printing input values : ", fullName, password, email)
+	fmt.Println("Printing input values: ", userName, password)
 
+	// Check if the username already exists
+	var existingUser structures.Users
+	if err := s.Db.Where("username = ?", userName).First(&existingUser).Error; err == nil {
+		// Username exists, return a conflict response
+		return c.Status(http.StatusConflict).JSON(fiber.Map{"error": "Username already exists"})
+	}
+
+	// Hash the password
 	hashedPassword, err := helpers.HashPassword(password)
 	if err != nil {
 		return c.Status(http.StatusInternalServerError).JSON(fiber.Map{"error": "Failed to hash password"})
 	}
 
+	// Create new user record
 	user := structures.Users{
-		FullName: fullName,
-		Email:    email,
+		Username: userName,
 		Password: hashedPassword,
 	}
 
 	if err := s.Db.Create(&user).Error; err != nil {
-		log.Fatal("Error is : ", err)
+		log.Fatal("Error is: ", err)
 		return c.Status(http.StatusInternalServerError).JSON(fiber.Map{"error": "Failed to create user"})
 	}
 
-	return c.Status(http.StatusCreated).JSON(fiber.Map{"message": "User registered successfully"})
+	fmt.Println("Printing user id :", user.ID)
 
+	// Return the newly created user's ID
+	return c.Status(http.StatusCreated).JSON(fiber.Map{
+		"message": "User registered successfully",
+		"user_id": user.ID, // Assuming user.ID is the auto-generated ID field
+	})
 }
 
 func (s *Server) Login(c *fiber.Ctx) error {
 
 	password := c.FormValue("password")
-	email := c.FormValue("email")
+	userName := c.FormValue("user_name")
 
 	var user structures.Users
 
-	result := s.Db.Where("email = ?", email).First(&user)
+	result := s.Db.Where("username = ?", userName).First(&user)
 	if result.Error != nil {
 		return c.Status(http.StatusUnauthorized).JSON(fiber.Map{"error": "Authentication failed"})
 	}
