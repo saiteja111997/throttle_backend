@@ -27,6 +27,7 @@ type Users struct {
 	Password   string    `gorm:"not null" json:"password"`
 	Email      string    `gorm:default:'' json:"email"`
 	ProfilePic string    `gorm: "not null"; default:'' json: "profile_pic"`
+	SignedIn   string    `gorm:"not null"; default:0 json:"signed_in"`
 	CreatedAt  time.Time `gorm:"default:CURRENT_TIMESTAMP" json:"created_at"`
 	UpdatedAt  time.Time `gorm:"default:CURRENT_TIMESTAMP" json:"updated_at"`
 }
