@@ -27,7 +27,7 @@ func main() {
 
 	// Use the CORS middleware
 	app.Use(cors.New(cors.Config{
-		AllowOrigins:     "http://127.0.0.1:3000",
+		AllowOrigins:     "*",
 		AllowMethods:     "GET,POST,PUT,DELETE",
 		AllowHeaders:     "Origin, Content-Type, Accept",
 		AllowCredentials: true,

@@ -47,14 +47,14 @@ func (s *Server) Register(c *fiber.Ctx) error {
 	// Return the newly created user's ID
 	return c.Status(http.StatusCreated).JSON(fiber.Map{
 		"message": "User registered successfully",
-		"user_id": user.ID, // Assuming user.ID is the auto-generated ID field
+		"userId":  user.ID, // Assuming user.ID is the auto-generated ID field
 	})
 }
 
 func (s *Server) Login(c *fiber.Ctx) error {
 
-	password := c.FormValue("password")
 	userName := c.FormValue("user_name")
+	password := c.FormValue("password")
 
 	var user structures.Users
 

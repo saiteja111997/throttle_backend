@@ -25,7 +25,7 @@ type Users struct {
 	ID         int       `gorm:"primaryKey" json:"id"`
 	Username   string    `gorm:"not null" json:"username"`
 	Password   string    `gorm:"not null" json:"password"`
-	Email      string    `gorm:"not null" json:"email"`
+	Email      string    `gorm:default:'' json:"email"`
 	ProfilePic string    `gorm: "not null"; default:'' json: "profile_pic"`
 	CreatedAt  time.Time `gorm:"default:CURRENT_TIMESTAMP" json:"created_at"`
 	UpdatedAt  time.Time `gorm:"default:CURRENT_TIMESTAMP" json:"updated_at"`
