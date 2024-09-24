@@ -91,8 +91,8 @@ func main() {
 	app.Post("/editing/images", svr.GetImagesFromS3)
 	app.Post("/auth/login", svr.Login)
 	app.Post("/auth/register", svr.Register)
-	app.Post("/auth/logout", svr.Logout)
-	app.Post("/auth/getAuthStatus", svr.GetAuthStatus)
+	// app.Post("/auth/logout", svr.Logout)
+	// app.Post("/auth/getAuthStatus", svr.GetAuthStatus)
 	app.Get("/oauth2/login", svr.HandleLogin)
 	app.Get("/oauth2/callback", svr.HandleCallback)
 

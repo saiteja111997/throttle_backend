@@ -7,6 +7,7 @@ import (
 	"os"
 	"strconv"
 	"strings"
+	"time"
 
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/session"
@@ -246,4 +247,28 @@ func DeleteDocFromDB(db *gorm.DB, errorID string) error {
 		return result.Error
 	}
 	return nil
+}
+
+// Helper function to format date with suffixes (st, nd, rd, th)
+func FormatDate(t time.Time) string {
+	// Create the base date format
+	// formattedDate := t.Format("Jan 2, 2006")
+
+	// Get the day of the month
+	day := t.Day()
+
+	// Determine the suffix for the day (st, nd, rd, th)
+	var suffix string
+	if day%10 == 1 && day != 11 {
+		suffix = "st"
+	} else if day%10 == 2 && day != 12 {
+		suffix = "nd"
+	} else if day%10 == 3 && day != 13 {
+		suffix = "rd"
+	} else {
+		suffix = "th"
+	}
+
+	// Insert the suffix into the formatted date
+	return t.Format("Jan 2") + suffix + t.Format(", 2006")
 }

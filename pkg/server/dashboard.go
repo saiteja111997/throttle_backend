@@ -76,12 +76,37 @@ func (s *Server) GetDashboardDoc(c *fiber.Ctx) error {
 		})
 	}
 
-	// fmt.Println("Printing the doc content : ", docContentString)
+	var userData structures.Users
+
+	err = s.Db.Where("id = ?", errorData.UserID).Find(&userData).Error
+	if err != nil {
+		fmt.Println("Error fetching error data from db : ", err.Error())
+		return c.Status(http.StatusInternalServerError).JSON(fiber.Map{
+			"status": "error",
+			"error":  "Failed to fetch user data",
+		})
+	}
+
+	var name string
+
+	if userData.Username == "" || len(userData.Username) == 0 {
+		name = userData.Email
+	} else {
+		name = userData.Username
+	}
+
+	fmt.Println("Printing name and profile data from db : ", name, userData.ProfilePic)
+
+	// Format the article published date in "Jan 1st, 2024" style
+	articlePublishedDate := helpers.FormatDate(errorData.UpdatedAt)
 
 	return c.Status(http.StatusOK).JSON(fiber.Map{
-		"status": "success",
-		"result": docContentString,
-		"title":  errorData.Title,
+		"status":  "success",
+		"result":  docContentString,
+		"title":   errorData.Title,
+		"created": articlePublishedDate,
+		"user":    name,
+		"picture": userData.ProfilePic,
 	})
 
 }

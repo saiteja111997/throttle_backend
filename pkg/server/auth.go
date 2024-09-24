@@ -68,13 +68,13 @@ func (s *Server) Login(c *fiber.Ctx) error {
 	}
 
 	// Update the signed in field in the database to 1 for the logged in user
-	err := s.Db.Raw("UPDATE users SET signed_in =? WHERE id =?", "1", user.ID).Error
-	if err != nil {
-		c.Status(http.StatusInternalServerError).JSON(fiber.Map{"error": "Unable to update user login status"})
-	}
+	// err := s.Db.Raw("UPDATE users SET signed_in =? WHERE id =?", "1", user.ID).Error
+	// if err != nil {
+	// 	c.Status(http.StatusInternalServerError).JSON(fiber.Map{"error": "Unable to update user login status"})
+	// }
 
-	fmt.Println("Printing user id : ", user.ID)
-	fmt.Println("Printing user signed in status : ", user.SignedIn)
+	// fmt.Println("Printing user id : ", user.ID)
+	// fmt.Println("Printing user signed in status : ", user.SignedIn)
 
 	return c.Status(http.StatusOK).JSON(fiber.Map{
 		"message": "Login successful",
@@ -83,30 +83,30 @@ func (s *Server) Login(c *fiber.Ctx) error {
 
 }
 
-func (s *Server) Logout(c *fiber.Ctx) error {
-	user_id := c.FormValue("user_id")
+// func (s *Server) Logout(c *fiber.Ctx) error {
+// 	user_id := c.FormValue("user_id")
 
-	// Update the signed in field in the database to 0 for the logged in user
-	err := s.Db.Raw("UPDATE users SET signed_in = ? WHERE id = ?", "0", user_id).Error
-	if err != nil {
-		c.Status(http.StatusInternalServerError).JSON(fiber.Map{"error": "Unable to logout"})
-	}
+// 	// Update the signed in field in the database to 0 for the logged in user
+// 	err := s.Db.Raw("UPDATE users SET signed_in = ? WHERE id = ?", "0", user_id).Error
+// 	if err != nil {
+// 		c.Status(http.StatusInternalServerError).JSON(fiber.Map{"error": "Unable to logout"})
+// 	}
 
-	return c.Status(http.StatusOK).JSON(fiber.Map{"message": "Action successful"})
-}
+// 	return c.Status(http.StatusOK).JSON(fiber.Map{"message": "Action successful"})
+// }
 
-func (s *Server) GetAuthStatus(c *fiber.Ctx) error {
-	user_id := c.FormValue("user_id")
+// func (s *Server) GetAuthStatus(c *fiber.Ctx) error {
+// 	user_id := c.FormValue("user_id")
 
-	// Get signed in status from db
-	var user structures.Users
+// 	// Get signed in status from db
+// 	var user structures.Users
 
-	result := s.Db.Where("id =?", user_id).First(&user)
-	if result.Error != nil {
-		return c.Status(http.StatusNotFound).JSON(fiber.Map{"error": "User not found"})
-	}
+// 	result := s.Db.Where("id =?", user_id).First(&user)
+// 	if result.Error != nil {
+// 		return c.Status(http.StatusNotFound).JSON(fiber.Map{"error": "User not found"})
+// 	}
 
-	return c.Status(http.StatusOK).JSON(fiber.Map{
-		"signed_in": user.SignedIn,
-	})
-}
+// 	return c.Status(http.StatusOK).JSON(fiber.Map{
+// 		"signed_in": user.SignedIn,
+// 	})
+// }

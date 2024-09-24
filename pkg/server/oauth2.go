@@ -10,6 +10,7 @@ import (
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/joho/godotenv"
+	"github.com/saiteja111997/throttle_backend/pkg/structures"
 	"golang.org/x/oauth2"
 	"golang.org/x/oauth2/google"
 )
@@ -64,13 +65,27 @@ func (s *Server) HandleCallback(c *fiber.Ctx) error {
 
 	fmt.Println("User information : ", userInfo)
 
-	// return c.Status(http.StatusOK).JSON(fiber.Map{
-	// 	"message": "success",
-	// 	"result":  userInfo,
-	// })
+	var existingUser structures.Users
+
+	if err := s.Db.Where("email = ?", userInfo["email"].(string)).First(&existingUser).Error; err != nil {
+
+		fmt.Println("New User sign up")
+		var user structures.Users
+		user.Email = userInfo["email"].(string)
+		user.ProfilePic = userInfo["picture"].(string)
+		//create entry in database
+		if err := s.Db.Create(&user).Error; err != nil {
+			log.Fatal("Error is: ", err)
+			return c.Status(http.StatusInternalServerError).JSON(fiber.Map{"error": "Failed to create user"})
+		}
+
+		return c.Redirect(fmt.Sprintf("http://127.0.0.1:3000/?user_id=%d", user.ID))
+	}
+
+	fmt.Println("Existing user sign in")
 
 	// Once authenticated, redirect back to the frontend
-	return c.Redirect("http://127.0.0.1:3000/dashboard") // Redirect user to your app's dashboard after login
+	return c.Redirect(fmt.Sprintf("http://127.0.0.1:3000/?user_id=%d", existingUser.ID))
 }
 
 func getUserInfo(token *oauth2.Token) (map[string]interface{}, error) {
