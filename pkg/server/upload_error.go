@@ -124,18 +124,8 @@ func (s *Server) UploadError(c *fiber.Ctx) error {
 func (s *Server) InsertUserActions(c *fiber.Ctx) error {
 	text := c.FormValue("text")
 	error_id := c.FormValue("error_id")
-	user_id := c.FormValue("user_id")
 
-	fmt.Println("Printing user id in user action api : ", user_id)
-
-	user_id_int, err := strconv.Atoi(user_id)
-
-	if err != nil {
-		fmt.Println("Failed to convert user id to integer : ", err.Error())
-		return c.Status(http.StatusInternalServerError).JSON(fiber.Map{
-			"error": fmt.Sprintf("Failed to convert user id to integer, %v", err),
-		})
-	}
+	var err error
 
 	// startContainer := c.FormValue("startContainer")
 	// endContainer := c.FormValue("endContainer")
@@ -148,7 +138,6 @@ func (s *Server) InsertUserActions(c *fiber.Ctx) error {
 
 	e := structures.UserActions{
 		TextContent: text,
-		UserID:      user_id_int,
 		ErrorID:     error_id,
 	}
 

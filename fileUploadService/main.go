@@ -72,6 +72,8 @@ func main() {
 		Db: db,
 	}
 
+	fmt.Println("Printing time : ", time.Now())
+
 	app.Get("/ping", svr.HealthCheck)
 	app.Post("/file_upload/upload_error", svr.UploadError)
 	app.Post("/file_upload/get_latest_unsolved", svr.GetUnresolvedJourneys)
@@ -89,12 +91,6 @@ func main() {
 	app.Post("/editing/error", svr.GetRawErrorDocs)
 	app.Post("/preDocEdit/getLatestErrorRaw", svr.GetLatestRawError)
 	app.Post("/editing/images", svr.GetImagesFromS3)
-	app.Post("/auth/login", svr.Login)
-	app.Post("/auth/register", svr.Register)
-	// app.Post("/auth/logout", svr.Logout)
-	// app.Post("/auth/getAuthStatus", svr.GetAuthStatus)
-	app.Get("/oauth2/login", svr.HandleLogin)
-	app.Get("/oauth2/callback", svr.HandleCallback)
 
 	fmt.Println("Routing established!!")
 

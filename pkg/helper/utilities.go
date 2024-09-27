@@ -1,6 +1,8 @@
 package helpers
 
 import (
+	"crypto/rand"
+	"encoding/base64"
 	"fmt"
 	"io/ioutil"
 	"mime/multipart"
@@ -8,6 +10,8 @@ import (
 	"strconv"
 	"strings"
 	"time"
+
+	jwt "github.com/dgrijalva/jwt-go"
 
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/session"
@@ -17,6 +21,29 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
+func CreateJWT(userID int) (string, error) {
+
+	jwtSecret := os.Getenv("JWT_SECRET")
+
+	fmt.Println("Printing JWT secret : ", jwtSecret)
+
+	claims := jwt.MapClaims{
+		"user_id": userID,
+		"exp":     time.Now().Add(time.Hour * 24).Unix(), // Token expiration
+	}
+
+	fmt.Println("Reached this point : ", claims)
+
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+
+	tokenString, err := token.SignedString([]byte(jwtSecret))
+
+	if err != nil {
+		fmt.Println("Printing error : ", err)
+	}
+
+	return tokenString, err
+}
 func IsLambda() bool {
 	if lambdaTaskRoot := os.Getenv("LAMBDA_TASK_ROOT"); lambdaTaskRoot != "" {
 		return true
@@ -271,4 +298,18 @@ func FormatDate(t time.Time) string {
 
 	// Insert the suffix into the formatted date
 	return t.Format("Jan 2") + suffix + t.Format(", 2006")
+}
+
+// GenerateRandomKey generates a 256-bit random secret key (32 bytes) and returns it as a base64 encoded string
+func GenerateRandomKey() (string, error) {
+	// 32 bytes for 256-bit key
+	key := make([]byte, 32)
+
+	// Read random bytes from the crypto/rand reader
+	if _, err := rand.Read(key); err != nil {
+		return "", err
+	}
+
+	// Return the key as a base64 encoded string
+	return base64.StdEncoding.EncodeToString(key), nil
 }

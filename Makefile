@@ -8,8 +8,8 @@ build fileUploadService: clean
 deploy_prod: build fileUploadService
 	serverless deploy --stage prod --aws-profile saiteja
 
-start: build
+start: build fileUploadService
 	sls offline --useDocker start --host 0.0.0.0 --stage local
 
-start_local: build
+start_local: build fileUploadService
 	go run fileUploadService/main.go
