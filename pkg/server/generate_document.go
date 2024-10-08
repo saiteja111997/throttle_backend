@@ -151,21 +151,38 @@ func (s *Server) GenerateDocument(c *fiber.Ctx) error {
 
 		log.Println("Doc status updated successfully")
 
-		// UPDATE THE DOC PATH IN DB
-		// result := s.Db.Exec("UPDATE errors SET time_taken = ? WHERE id = ?", timeElapsed, errorID)
+		var userData structures.Users
 
-		// if result.Error != nil {
-		// 	fmt.Println("Error updating record:", result.Error)
-		// 	return result.Error
-		// }
+		err = s.Db.Where("id = ?", errorData.UserID).Find(&userData).Error
+		if err != nil {
+			fmt.Println("Error fetching error data from db : ", err.Error())
+			return c.Status(http.StatusInternalServerError).JSON(fiber.Map{
+				"status": "error",
+				"error":  "Failed to fetch user data",
+			})
+		}
 
-		// fmt.Println("Here is the response from Gemini Ai : ", text)
+		var name string
+
+		if userData.Username == "" || len(userData.Username) == 0 {
+			name = userData.Email
+		} else {
+			name = userData.Username
+		}
+
+		fmt.Println("Printing name and profile data from db : ", name, userData.ProfilePic)
+
+		// Format the article published date in "Jan 1st, 2024" style
+		articlePublishedDate := helpers.FormatDate(errorData.UpdatedAt)
 
 		c.Set("Content-Type", "application/json")
 		return c.Status(http.StatusOK).JSON(fiber.Map{
 			"status":   "success",
 			"response": text,
 			"title":    errorData.Title,
+			"created":  articlePublishedDate,
+			"user":     name,
+			"picture":  userData.ProfilePic,
 		})
 	}
 

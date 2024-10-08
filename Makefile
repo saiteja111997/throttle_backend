@@ -13,3 +13,6 @@ start: build fileUploadService
 
 start_local: build fileUploadService
 	go run fileUploadService/main.go
+
+
+	

@@ -8,67 +8,124 @@ provider:
   stage: ${opt:stage}
 
 functions:
-  FileUpload:
+  UploadError:
     handler: bin/fileUploadService/main
     events:
       - http:
           path: /file_upload/upload_error
           method: POST
-  UserAction:
+
+  GetLatestUnresolvedJourneys:
+    handler: bin/fileUploadService/main
+    events:
+      - http:
+          path: /file_upload/get_latest_unsolved
+          method: POST
+
+  UpdateErrorState:
+    handler: bin/fileUploadService/main
+    events:
+      - http:
+          path: /file_upload/update_error_state
+          method: POST
+
+  UpdateFinalState:
+    handler: bin/fileUploadService/main
+    events:
+      - http:
+          path: /file_upload/update_final_state
+          method: POST
+
+  InsertUserActions:
     handler: bin/fileUploadService/main
     events:
       - http:
           path: /file_upload/user_action
           method: POST
+
   DeleteUserAction:
     handler: bin/fileUploadService/main
     events:
       - http:
           path: /file_upload/delete_user_action
           method: POST
-  GetRawErrorData:
+
+  ValidateUserAction:
+    handler: bin/fileUploadService/main
+    events:
+      - http:
+          path: /file_upload/validate_user_action
+          method: POST
+
+  GetRawErrorDocs:
     handler: bin/fileUploadService/main
     events:
       - http:
           path: /editing/error
           method: POST
-  GetRawImageData:
+
+  GetImagesFromS3:
     handler: bin/fileUploadService/main
     events:
       - http:
           path: /editing/images
           method: POST
+
+  GetLatestRawError:
+    handler: bin/fileUploadService/main
+    events:
+      - http:
+          path: /preDocEdit/getLatestErrorRaw
+          method: POST
+
   GenerateDocument:
     handler: bin/fileUploadService/main
     events:
       - http:
           path: /generateDocument
           method: POST
-  Login:
-    handler: bin/fileUploadService/main
-    events:
-      - http:
-          path: /auth/login
-          method: POST
-  Register:
-    handler: bin/fileUploadService/main
-    events:
-      - http:
-          path: /auth/register
-          method: POST
-  Oauth2Login:
-    handler: bin/fileUploadService/main
-    events:
-      - http:
-          path: /oauth2/login
-          method: GET
-  Oauth2CallBack:
-    handler: bin/fileUploadService/main
-    events:
-      - http:
-          path: /oauth2/callback
-          method: GET
 
+  GetDashboard:
+    handler: bin/fileUploadService/main
+    events:
+      - http:
+          path: /dashboard/getDashboard
+          method: POST
+
+  GetDashboardDoc:
+    handler: bin/fileUploadService/main
+    events:
+      - http:
+          path: /dashboard/getDashboardDoc
+          method: POST
+
+  PublishDoc:
+    handler: bin/fileUploadService/main
+    events:
+      - http:
+          path: /dashboard/publishDoc
+          method: POST
+
+  SaveDoc:
+    handler: bin/fileUploadService/main
+    events:
+      - http:
+          path: /dashboard/saveDoc
+          method: POST
+
+  DeleteDoc:
+    handler: bin/fileUploadService/main
+    events:
+      - http:
+          path: /dashboard/deleteDoc
+          method: POST
+
+  HealthCheck:
+    handler: bin/fileUploadService/main
+    events:
+      - http:
+          path: /ping
+          method: GET
 
 package:
   patterns:
@@ -77,9 +134,7 @@ package:
 
 plugins:
   - serverless-offline
- 
+
 custom:
   serverless-offline:
     noPrependStageInUrl: true
-
-

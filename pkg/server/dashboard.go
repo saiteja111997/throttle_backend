@@ -143,7 +143,7 @@ func (s *Server) PublishDoc(c *fiber.Ctx) error {
 func (s *Server) SaveDoc(c *fiber.Ctx) error {
 
 	textContent := c.FormValue("content")
-	id := c.FormValue("id")
+	id := c.FormValue("error_id")
 
 	// fmt.Println("Printing content : ", textContent)
 	fmt.Println("Printing error id : ", id)
