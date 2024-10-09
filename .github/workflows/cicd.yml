@@ -1,4 +1,4 @@
-name: Deploy throttleBackend Application
+name: Deploy throttleBackend Service
 
 on:
   push:
@@ -14,16 +14,16 @@ jobs:
       - name: Login to docker hub
         run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
       - name: Build docker image
-        run: docker build -t gigatron333/throttleBackendService .
+        run: docker build -t gigatron333/throttlebackendservice .
       - name: Push image to docker hub
-        run: docker push gigatron333/throttleBackendService:latest
+        run: docker push gigatron333/throttlebackendservice:latest
   deploy:
     needs: build
     runs-on: self-hosted
     steps:
       - name: Pull docker image
-        run: docker pull gigatron333/throttleBackendService:latest
+        run: docker pull gigatron333/throttlebackendservice:latest
       - name: Delete old container
-        run: docker rm -f throttleBackendServiceContainer  
+        run: docker rm -f throttlebackendservicecontainer  
       - name: Run docker container          
-        run: docker run -d -p 8080:8080 --name throttleBackendServiceContainer gigatron333/throttleBackendService
+        run: docker run -d -p 8080:8080 --name throttlebackendservicecontainer gigatron333/throttlebackendservice
