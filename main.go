@@ -1,16 +1,12 @@
 package main
 
 import (
-	"context"
 	"fmt"
 	"log"
 	"net"
 	"os"
 	"time"
 
-	"github.com/aws/aws-lambda-go/events"
-	"github.com/aws/aws-lambda-go/lambda"
-	fiberadapter "github.com/awslabs/aws-lambda-go-api-proxy/fiber"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/joho/godotenv"
@@ -19,8 +15,6 @@ import (
 	"github.com/saiteja111997/throttle_backend/pkg/server"
 	"github.com/saiteja111997/throttle_backend/pkg/structures"
 )
-
-var fiberLambda *fiberadapter.FiberLambda
 
 func main() {
 	app := fiber.New()
@@ -94,34 +88,41 @@ func main() {
 
 	fmt.Println("Routing established!!")
 
-	if helpers.IsLambda() {
-		fiberLambda = fiberadapter.New(app)
-		lambda.Start(Handler)
-	} else {
-		fmt.Println("Starting server locally!!")
-		err = app.Listen(":8080")
+	// if helpers.IsLambda() {
+	// 	fiberLambda = fiberadapter.New(app)
+	// 	lambda.Start(Handler)
+	// } else {
+	// 	fmt.Println("Starting server locally!!")
+	// 	err = app.Listen(":8080")
 
-		if err != nil {
-			fmt.Println("An error occured while starting the server : ", err)
-		}
+	// 	if err != nil {
+	// 		fmt.Println("An error occured while starting the server : ", err)
+	// 	}
+	// }
+
+	fmt.Println("Starting server locally!!")
+	err = app.Listen(":8080")
+
+	if err != nil {
+		fmt.Println("An error occured while starting the server : ", err)
 	}
 
 }
 
-func Handler(ctx context.Context, request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
-	// Proxy the request to the Fiber app and get the response
-	response, err := fiberLambda.ProxyWithContext(ctx, request)
+// func Handler(ctx context.Context, request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
+// 	// Proxy the request to the Fiber app and get the response
+// 	response, err := fiberLambda.ProxyWithContext(ctx, request)
 
-	response.Headers = make(map[string]string)
+// 	response.Headers = make(map[string]string)
 
-	// Add CORS headers to the response
-	response.Headers["Access-Control-Allow-Origin"] = "*"
-	response.Headers["Access-Control-Allow-Methods"] = "GET,POST,PUT,DELETE"
-	response.Headers["Access-Control-Allow-Headers"] = "Origin, Content-Type, Accept"
-	response.Headers["Access-Control-Allow-Credentials"] = "true"
+// 	// Add CORS headers to the response
+// 	response.Headers["Access-Control-Allow-Origin"] = "*"
+// 	response.Headers["Access-Control-Allow-Methods"] = "GET,POST,PUT,DELETE"
+// 	response.Headers["Access-Control-Allow-Headers"] = "Origin, Content-Type, Accept"
+// 	response.Headers["Access-Control-Allow-Credentials"] = "true"
 
-	return response, err
-}
+// 	return response, err
+// }
 
 func waitForHost(host, port string) error {
 	timeOut := time.Second
