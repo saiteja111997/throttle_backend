@@ -27,6 +27,10 @@ func main() {
 		AllowCredentials: false,
 	}))
 
+	app.Options("/*", func(c *fiber.Ctx) error {
+		return c.SendStatus(200) // Return OK for preflight checks
+	})
+
 	err := godotenv.Load(".env")
 	if err != nil {
 		log.Fatalf("Error loading environment variables file")
